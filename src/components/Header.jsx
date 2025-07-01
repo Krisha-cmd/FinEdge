@@ -23,15 +23,18 @@ const Header = () => {
         return () => document.removeEventListener('click', closeMenu);
     }, [isMenuOpen]);
 
-    // Prevent body scroll when menu is open
+    // Handle body scroll lock in useEffect
     useEffect(() => {
+        // Only add the class if needed
         if (isMenuOpen) {
-            document.body.style.overflow = 'hidden';
+            document.body.classList.add('no-scroll');
         } else {
-            document.body.style.overflow = 'visible';
+            document.body.classList.remove('no-scroll');
         }
+
+        // Cleanup function
         return () => {
-            document.body.style.overflow = 'visible';
+            document.body.classList.remove('no-scroll');
         };
     }, [isMenuOpen]);
 
