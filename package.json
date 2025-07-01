@@ -26,7 +26,6 @@
     "react-router-dom": "^5.3.4",
     "react-scripts": "^5.0.1"
   },
-  "homepage": "http://one-infinity-finedge.com",
   "browserslist": {
     "production": [
       ">0.2%",
