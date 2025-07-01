@@ -1,0 +1,223 @@
+.contact-section {
+  background: var(--light-gray);
+  padding: 5rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add decorative elements */
+.contact-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  background: var(--gradient-primary);
+  opacity: 0.1;
+  border-radius: 50%;
+  transform: translate(100px, -150px);
+}
+
+.contact-container {
+  max-width: 1200px;
+  width: 95%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: clamp(1.5rem, 5vw, 3rem);
+  position: relative;
+  z-index: 1;
+}
+
+.contact-heading {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: var(--primary);
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+.contact-description {
+  color: var(--text-secondary);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contact-label {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+.contact-input,
+.contact-textarea {
+  width: 100%;
+  padding: clamp(0.8rem, 2vw, 1rem) clamp(1rem, 2vw, 1.5rem);
+  border: 2px solid var(--purple-light);
+  border-radius: 12px;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  transition: all 0.3s ease;
+  background: var(--white);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+}
+
+.contact-textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.contact-input:focus,
+.contact-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(143, 57, 133, 0.1);
+  outline: none;
+}
+
+.contact-submit {
+  background: var(--gradient-primary);
+  padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
+  border-radius: 12px;
+  border: none;
+  color: var(--white);
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.contact-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(143, 57, 133, 0.2);
+}
+
+.contact-info {
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(182, 162, 219, 0.1), rgba(76, 122, 255, 0.1));
+  border-radius: 16px;
+  height: fit-content;
+}
+
+.contact-info-heading {
+  color: var(--primary);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.contact-info-text {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+  .contact-container {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-section {
+    padding: 3rem 1rem;
+  }
+
+  .contact-container {
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 600px;
+    padding: 1.5rem;
+  }
+
+  .contact-info {
+    order: -1;
+  }
+
+  .contact-section::before {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-section {
+    padding: 2rem 0.5rem;
+  }
+
+  .contact-container {
+    border-radius: 15px;
+    padding: 1rem;
+  }
+
+  .contact-form-group {
+    gap: 0.3rem;
+  }
+
+  .contact-info {
+    padding: 1.5rem;
+  }
+
+  .contact-info-heading {
+    font-size: 1.3rem;
+  }
+
+  .contact-info-text {
+    font-size: 0.9rem;
+  }
+
+  .contact-section::before {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .contact-input:focus,
+  .contact-textarea:focus {
+    box-shadow: none;
+  }
+
+  .contact-submit:active {
+    transform: translateY(-1px);
+  }
+}
+
+/* Print styles */
+@media print {
+  .contact-section {
+    padding: 0;
+  }
+
+  .contact-container {
+    box-shadow: none;
+  }
+
+  .contact-section::before {
+    display: none;
+  }
+}

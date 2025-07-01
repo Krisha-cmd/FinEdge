@@ -1,0 +1,26 @@
+:root {
+  /* Primary Colors */
+  --primary: #2b3990;
+  --secondary: #6a4c93;
+  --accent: #8f3985;
+  
+  /* Supporting Colors */
+  --pink-light: #f7c8e0;
+  --pink: #ff6b95;
+  --purple-light: #b6a2db;
+  --blue-light: #4c7aff;
+  
+  /* Base Colors */
+  --white: #ffffff;
+  --light-gray: #f8fafc;
+  --dark-gray: #4b5563;
+  
+  /* Text Colors */
+  --text-primary: #2d3748;
+  --text-secondary: #718096;
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #4c7aff 0%, #8f3985 100%);
+  --gradient-hover: linear-gradient(135deg, #8f3985 0%, #4c7aff 100%);
+  --gradient-overlay: linear-gradient(rgba(43, 57, 144, 0.9), rgba(143, 57, 133, 0.9));
+}

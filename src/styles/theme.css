@@ -1,0 +1,18 @@
+:root {
+  --primary: #0a2540;
+  --secondary: #00e0d3;
+  --accent: #007cf0;
+  --white: #ffffff;
+  --light-gray: #f7fafc;
+  --dark-gray: #4b5563;
+  --text-primary: #2d3748;
+  --text-secondary: #718096;
+  --gradient-primary: linear-gradient(135deg, #00e0d3 0%, #007cf0 100%);
+  --gradient-hover: linear-gradient(135deg, #007cf0 0%, #00e0d3 100%);
+}
+
+.App {
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
