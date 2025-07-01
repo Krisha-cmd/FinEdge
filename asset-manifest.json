@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/FinEdge/static/css/main.fdd83b15.css",
-    "main.js": "/FinEdge/static/js/main.e695beea.js",
+    "main.js": "/FinEdge/static/js/main.0cd4cd4b.js",
     "static/media/logo.jpg": "/FinEdge/static/media/logo.cf0291364d48626c0de0.jpg",
     "index.html": "/FinEdge/index.html",
     "main.fdd83b15.css.map": "/FinEdge/static/css/main.fdd83b15.css.map",
-    "main.e695beea.js.map": "/FinEdge/static/js/main.e695beea.js.map"
+    "main.0cd4cd4b.js.map": "/FinEdge/static/js/main.0cd4cd4b.js.map"
   },
   "entrypoints": [
     "static/css/main.fdd83b15.css",
-    "static/js/main.e695beea.js"
+    "static/js/main.0cd4cd4b.js"
   ]
 }
