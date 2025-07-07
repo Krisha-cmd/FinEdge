@@ -12,14 +12,14 @@ const HeroSection = () => {
         setIsExiting(true);
         setTimeout(() => {
             navigate('/login');
-        }, 500); // Match this with animation duration
+        }, 0); // Match this with animation duration
     };
 
     return (
         <motion.div 
             className="hero-section"
             animate={{ opacity: isExiting ? 0 : 1 }}
-            transition={{ duration: 0.2 , ease: "easeInOut" }}
+            transition={{ duration: 0.1 , ease: "easeInOut" }}
         >
             <AnimatedBackground type="full" />
             <div className="hero-content">
