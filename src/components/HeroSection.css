@@ -21,65 +21,8 @@
     overflow: hidden;
 }
 
-.animated-circle {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.1;
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
 
-.circle-icon {
-    width: 60%;
-    height: 60%;
-    object-fit: contain;
-}
 
-@media (max-width: 768px) {
-    .circle-icon {
-        width: 50%;
-        height: 50%;
-    }
-}
-
-.circle-1 {
-    width: 400px;
-    height: 400px;
-    background: var(--pink);
-    top: -100px;
-    right: -100px;
-    animation: float 8s ease-in-out infinite;
-}
-
-.circle-2 {
-    width: 350px;
-    height: 350px;
-    background: var(--blue-light);
-    bottom: -50px;
-    left: -50px;
-    animation: float 12s ease-in-out infinite reverse;
-}
-
-.circle-3 {
-    width: 300px;
-    height: 300px;
-    background: var(--purple-light);
-    top: 50%;
-    right: 15%;
-    animation: float 10s ease-in-out infinite 2s;
-}
-
-.circle-4 {
-    width: 250px;
-    height: 250px;
-    background: var(--accent);
-    bottom: 20%;
-    left: 15%;
-    animation: float 9s ease-in-out infinite 1s;
-}
 
 .hero-content {
     text-align: center;
@@ -350,31 +293,4 @@
         font-size: 1.5rem;
     }
 
-    .circle-icon {
-        font-size: 60px;
-    }
-
-    .animated-circle {
-        opacity: 0.08;
-    }
-
-    .circle-1 {
-        width: 250px;
-        height: 250px;
-    }
-
-    .circle-2 {
-        width: 220px;
-        height: 220px;
-    }
-
-    .circle-3 {
-        width: 200px;
-        height: 200px;
-    }
-
-    .circle-4 {
-        width: 180px;
-        height: 180px;
-    }
 }

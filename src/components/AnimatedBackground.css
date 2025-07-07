@@ -29,6 +29,23 @@
     opacity: 0.2;
 }
 
+.animated-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.circle-icon {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+}
+
 /* Type-specific styles */
 .animated-background.compact {
     height: 80vh;
@@ -42,8 +59,76 @@
     font-size: 1.5rem;
 }
 
+.circle-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--pink);
+    top: -100px;
+    right: -100px;
+    animation: float 8s ease-in-out infinite;
+}
+
+.circle-2 {
+    width: 350px;
+    height: 350px;
+    background: var(--blue-light);
+    bottom: -50px;
+    left: -50px;
+    animation: float 12s ease-in-out infinite reverse;
+}
+
+.circle-3 {
+    width: 300px;
+    height: 300px;
+    background: var(--purple-light);
+    top: 50%;
+    right: 15%;
+    animation: float 10s ease-in-out infinite 2s;
+}
+
+.circle-4 {
+    width: 250px;
+    height: 250px;
+    background: var(--accent);
+    bottom: 20%;
+    left: 15%;
+    animation: float 9s ease-in-out infinite 1s;
+}
+
+
 @media (max-width: 768px) {
     .animated-background.compact {
         height: 100vh;
     }
+
+    .floating-icon svg {
+    width: 2rem;
+    height: 2rem;
+}
+ .circle-icon {
+        width: 50%;
+        height: 50%;
+    }
+
+    
+.circle-1 {
+    width: 100px;
+    height: 100px;
+}
+
+.circle-2 {
+    width: 175px;
+    height: 175px;
+}
+
+.circle-3 {
+    width: 150px;
+    height: 150px;
+}
+
+.circle-4 {
+    width: 125px;
+    height: 125px;
+}
+
 }
