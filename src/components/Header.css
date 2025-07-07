@@ -70,6 +70,15 @@
   text-decoration: none;
 }
 
+.nav-link.active {
+    color: var(--primary);
+    background: linear-gradient(135deg, rgba(247, 200, 224, 0.2), rgba(182, 162, 219, 0.2));
+}
+
+.nav-link.active::after {
+    width: 80%;
+}
+
 /* Mobile menu button */
 .mobile-menu-btn {
   display: none;
@@ -149,6 +158,15 @@
     width: 3px;
     opacity: 1;
   }
+
+  .nav-link.active {
+        background: transparent;
+    }
+
+    .nav-link.active::after {
+        width: 3px;
+        opacity: 1;
+    }
 
   .menu-overlay {
     position: fixed;
