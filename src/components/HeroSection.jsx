@@ -1,17 +1,36 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FaHeartbeat, FaUserShield, FaCar, FaMotorcycle } from 'react-icons/fa';
 import './HeroSection.css';
+
+const floatingIcons = [
+    { icon: <FaHeartbeat />, name: 'health' },
+    { icon: <FaUserShield />, name: 'life' },
+    { icon: <FaCar />, name: 'car' },
+    { icon: <FaMotorcycle />, name: 'scooter' }
+];
 
 const HeroSection = () => {
     return (
         <div className="hero-section">
             <div className="hero-background">
-                <div className="animated-circle circle-1"></div>
-                <div className="animated-circle circle-2"></div>
-                <div className="animated-circle circle-3"></div>
-                <div className="floating-squares">
-                    {[...Array(10)].map((_, i) => (
-                        <div key={i} className={`square square-${i + 1}`}></div>
+                <div className="animated-circle circle-1">
+                    <FaHeartbeat className="circle-icon" />
+                </div>
+                <div className="animated-circle circle-2">
+                    <FaUserShield className="circle-icon" />
+                </div>
+                <div className="animated-circle circle-3">
+                    <FaCar className="circle-icon" />
+                </div>
+                <div className="animated-circle circle-4">
+                    <FaMotorcycle className="circle-icon" />
+                </div>
+                <div className="floating-icons">
+                    {[...Array(12)].map((_, i) => (
+                        <div key={i} className={`floating-icon icon-${i + 1}`}>
+                            {floatingIcons[i % 4].icon}
+                        </div>
                     ))}
                 </div>
             </div>

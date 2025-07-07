@@ -26,7 +26,16 @@
     border-radius: 50%;
     opacity: 0.1;
     pointer-events: none;
-    /* Prevent interaction with circles */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.circle-icon {
+    font-size: 100px;
+    color: var(--white);
+    opacity: 0.8;
 }
 
 .circle-1 {
@@ -39,8 +48,8 @@
 }
 
 .circle-2 {
-    width: 300px;
-    height: 300px;
+    width: 350px;
+    height: 350px;
     background: var(--blue-light);
     bottom: -50px;
     left: -50px;
@@ -48,12 +57,21 @@
 }
 
 .circle-3 {
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     background: var(--purple-light);
     top: 50%;
     right: 15%;
     animation: float 10s ease-in-out infinite 2s;
+}
+
+.circle-4 {
+    width: 250px;
+    height: 250px;
+    background: var(--accent);
+    bottom: 20%;
+    left: 15%;
+    animation: float 9s ease-in-out infinite 1s;
 }
 
 .hero-content {
@@ -250,6 +268,54 @@
     animation-delay: 18s;
 }
 
+.floating-icons {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.floating-icon {
+    position: absolute;
+    font-size: 3rem;
+    color: var(--white);
+    opacity: 0.15;
+    animation: floatIcon 15s linear infinite;
+    bottom: -50px; /* Start from below the viewport */
+}
+
+@keyframes floatIcon {
+    0% {
+        transform: translateY(0) rotate(0deg) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.15;
+    }
+    90% {
+        opacity: 0.15;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* Position each icon horizontally */
+.icon-1 { left: 5%; animation-delay: 0s; }
+.icon-2 { left: 15%; animation-delay: 4s; }
+.icon-3 { left: 25%; animation-delay: 8s; }
+.icon-4 { left: 35%; animation-delay: 2s; }
+.icon-5 { left: 45%; animation-delay: 6s; }
+.icon-6 { left: 55%; animation-delay: 10s; }
+.icon-7 { left: 65%; animation-delay: 3s; }
+.icon-8 { left: 75%; animation-delay: 7s; }
+.icon-9 { left: 85%; animation-delay: 11s; }
+.icon-10 { left: 95%; animation-delay: 5s; }
+.icon-11 { left: 40%; animation-delay: 9s; }
+.icon-12 { left: 70%; animation-delay: 1s; }
+
 @media (max-width: 768px) {
     .hero-content h1 {
         font-size: 2.5rem;
@@ -271,5 +337,37 @@
     .square {
         width: 30px;
         height: 30px;
+    }
+
+    .floating-icon {
+        font-size: 1.5rem;
+    }
+
+    .circle-icon {
+        font-size: 60px;
+    }
+
+    .animated-circle {
+        opacity: 0.08;
+    }
+
+    .circle-1 {
+        width: 250px;
+        height: 250px;
+    }
+
+    .circle-2 {
+        width: 220px;
+        height: 220px;
+    }
+
+    .circle-3 {
+        width: 200px;
+        height: 200px;
+    }
+
+    .circle-4 {
+        width: 180px;
+        height: 180px;
     }
 }

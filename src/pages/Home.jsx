@@ -4,13 +4,15 @@ import HeroSection from '../components/HeroSection';
 import FeaturesSection from '../components/FeaturesSection';
 import ContactSection from '../components/ContactSection';
 import Footer from '../components/Footer';
+import InsuranceProducts from '../components/InsuranceProducts';
 
 const Home = () => {
     return (
-        <div>
+        <div className="home">
             <HeroSection />
+            <InsuranceProducts />
             <FeaturesSection />
-            <ContactSection/>
+            <ContactSection />
         </div>
     );
 };
