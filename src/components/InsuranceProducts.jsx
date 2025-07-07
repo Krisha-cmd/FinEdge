@@ -57,6 +57,9 @@ const InsuranceProducts = () => {
     return (
         <section className="insurance-section">
             <h2 className="insurance-heading">Our Insurance Products</h2>
+            <p className="insurance-subheading">
+                Discover our comprehensive range of insurance solutions designed to protect what matters most to you
+            </p>
             <div className="insurance-container">
                 <div className="insurance-grid">
                     {insuranceData.map((insurance) => (
