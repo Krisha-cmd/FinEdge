@@ -5,6 +5,7 @@ const ContactSection = () => {
     return (
         <section id="contact" className="contact-section">
             <div className="contact-container">
+                
                 <h2 className="contact-heading">Contact Us</h2>
                 <p className="contact-description">If you have any questions or need assistance, feel free to reach out to us.</p>
                 
