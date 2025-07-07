@@ -4,26 +4,39 @@
   box-sizing: border-box;
 }
 
-:root {
-    --primary: #0a2540;
-    --secondary: #00e0d3;
-    --accent: #007cf0;
-    --white: #ffffff;
-    --lightGray: #f7fafc;
-    --darkGray: #4b5563;
-    --textPrimary: #2d3748;
-    --textSecondary: #718096;
-    --gradient: linear-gradient(135deg, #00e0d3 0%, #007cf0 100%);
-    --gradientHover: linear-gradient(135deg, #007cf0 0%, #00e0d3 100%);
+
+html {
+  color-scheme: light;
 }
 
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
+  
   width: 100%;
-  background-color: #f4f4f4;
-  color: #333;
+  background-color: var(--white);
+  color: var(--text-primary);
+  /* Force light mode background */
+  forced-color-adjust: none;
+  -webkit-forced-color-adjust: none;
+}
+
+/* Force light mode for form elements */
+input,
+textarea,
+select,
+button {
+  color-scheme: light;
+  forced-color-adjust: none;
+  -webkit-forced-color-adjust: none;
+}
+
+/* Ensure SVGs and images maintain colors */
+img,
+svg {
+  forced-color-adjust: none;
+  -webkit-forced-color-adjust: none;
 }
 
 header {

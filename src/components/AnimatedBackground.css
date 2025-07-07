@@ -1,5 +1,7 @@
 .animated-background {
     position: absolute;
+      forced-color-adjust: none;
+  -webkit-forced-color-adjust: none;
     width: 100%;
     height: 100%;
     top: 0;
@@ -12,6 +14,7 @@
 /* Include all the circle styles, floating icon styles, and animations */
 
 .float-icon {
+    
     width: 100%;
     height: 100%;
     object-fit: contain;

@@ -24,4 +24,15 @@
   --gradient-hover: linear-gradient(135deg, #8f3985 0%, #4c7aff 100%);
   --gradient-overlay-base: linear-gradient(rgba(43, 57, 144, 0.2), rgba(143, 57, 133, 0.2));
   --gradient-overlay: linear-gradient(rgba(43, 57, 144, 0.9), rgba(143, 57, 133, 0.9));
+
+  /* Force light mode colors */
+  color-scheme: light;
+}
+
+/* Explicitly set colors for dark mode to match light mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Keep the same colors as light mode */
+    color-scheme: light;
+  }
 }

@@ -1,10 +1,9 @@
 import React from 'react';
-import Header from '../components/Header';
 import HeroSection from '../components/HeroSection';
 import FeaturesSection from '../components/FeaturesSection';
-import ContactSection from '../components/ContactSection';
-import Footer from '../components/Footer';
 import InsuranceProducts from '../components/InsuranceProducts';
+import ContactSection from '../components/ContactSection';
+import ScrollToTop from '../components/ScrollToTop';
 
 const Home = () => {
     return (
@@ -13,6 +12,7 @@ const Home = () => {
             <FeaturesSection />
             <InsuranceProducts />
             <ContactSection />
+            <ScrollToTop />
         </div>
     );
 };
