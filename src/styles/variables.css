@@ -31,8 +31,12 @@
 
 /* Explicitly set colors for dark mode to match light mode */
 @media (prefers-color-scheme: dark) {
-  :root {
-    /* Keep the same colors as light mode */
-    color-scheme: light;
+  body {
+    background-color: #121212;
+    color: #ffffff;
+  }
+
+  h1, p, a {
+    color: #ffffff;
   }
 }

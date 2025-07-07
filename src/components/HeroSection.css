@@ -2,6 +2,8 @@
     background: var(--gradient-overlay);
     color: var(--white);
     height: calc(100vh - 73px);
+      forced-color-adjust: none;
+  -webkit-forced-color-adjust: none;
     /* Subtract header height */
     display: flex;
     align-items: center;
@@ -10,6 +12,9 @@
     overflow: hidden;
     width: 100%;
 }
+
+
+    
 
 .hero-background {
     position: absolute;
@@ -293,4 +298,26 @@
         font-size: 1.5rem;
     }
 
+    @media (prefers-color-scheme: dark) {
+    .hero-section {
+        background: var(--dark-gradient-overlay);
+        color: var(--dark-white);
+    }
+    .hero-content h1{
+
+    background: linear-gradient(135deg, var(--accent) 100%, var(--white) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    }
+
+    .hero-cta-button{
+            background-color: white;
+    color: var(--primary);
+    border: solid 2px var(--primary);
+    }
+
 }
+
+}
+
+
