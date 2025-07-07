@@ -1,7 +1,7 @@
 .insurance-section {
-    min-height: 100vh;
+    max-height: 120vh;
     background: var(--white);
-    padding: 6rem 2rem;
+    padding: 2rem 2rem;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -40,7 +40,7 @@
     text-align: center;
     font-size: clamp(2rem, 4vw, 3rem);
     color: var(--primary);
-    margin-bottom: 1rem;
+    /* margin-bottom:  */
     position: relative;
     z-index: 1;
 }
@@ -48,7 +48,7 @@
 .insurance-subheading {
     text-align: center;
     color: var(--text-secondary);
-    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-size: 1rem;
     max-width: 600px;
     margin: 0 auto 2rem;
     position: relative;
@@ -268,6 +268,9 @@
 }
 
 @media (max-width: 968px) {
+    .insurance-section{
+        max-height: max-content;
+    }
     .insurance-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;

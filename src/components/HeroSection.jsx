@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaHeartbeat, FaUserShield, FaCar, FaMotorcycle } from 'react-icons/fa';
+import healthIcon from '../assets/health-insurance.png';
+import lifeIcon from '../assets/life-insurance.png';
+import carIcon from '../assets/car-insurance.png';
+import scooterIcon from '../assets/scooter-insurance.png';
 import './HeroSection.css';
 
 const floatingIcons = [
@@ -15,16 +19,16 @@ const HeroSection = () => {
         <div className="hero-section">
             <div className="hero-background">
                 <div className="animated-circle circle-1">
-                    <FaHeartbeat className="circle-icon" />
+                    <img src={healthIcon} alt="Health Insurance" className="circle-icon" />
                 </div>
                 <div className="animated-circle circle-2">
-                    <FaUserShield className="circle-icon" />
+                    <img src={lifeIcon} alt="Life Insurance" className="circle-icon" />
                 </div>
                 <div className="animated-circle circle-3">
-                    <FaCar className="circle-icon" />
+                    <img src={carIcon} alt="Car Insurance" className="circle-icon" />
                 </div>
                 <div className="animated-circle circle-4">
-                    <FaMotorcycle className="circle-icon" />
+                    <img src={scooterIcon} alt="Two-Wheeler Insurance" className="circle-icon" />
                 </div>
                 <div className="floating-icons">
                     {[...Array(12)].map((_, i) => (

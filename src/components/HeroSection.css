@@ -33,9 +33,16 @@
 }
 
 .circle-icon {
-    font-size: 100px;
-    color: var(--white);
-    opacity: 0.8;
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .circle-icon {
+        width: 50%;
+        height: 50%;
+    }
 }
 
 .circle-1 {

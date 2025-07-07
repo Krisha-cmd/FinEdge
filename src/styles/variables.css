@@ -22,5 +22,6 @@
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #4c7aff 0%, #8f3985 100%);
   --gradient-hover: linear-gradient(135deg, #8f3985 0%, #4c7aff 100%);
+  --gradient-overlay-base: linear-gradient(rgba(43, 57, 144, 0.2), rgba(143, 57, 133, 0.2));
   --gradient-overlay: linear-gradient(rgba(43, 57, 144, 0.9), rgba(143, 57, 133, 0.9));
 }
