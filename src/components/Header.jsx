@@ -11,6 +11,12 @@ const Header = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const handleNavClick = () => {
+        setIsMenuOpen(false);
+        // Remove no-scroll class when navigating
+        document.body.classList.remove('no-scroll');
+    };
+
     // Close menu when clicking outside
     useEffect(() => {
         const closeMenu = (e) => {
@@ -58,36 +64,36 @@ const Header = () => {
                     <NavLink 
                         to="/" 
                         className="nav-link" 
-                        onClick={toggleMenu}
-                        exact
+                        onClick={handleNavClick}
+                        end // Replace 'exact' with 'end' for React Router v6
                     >
                         Home
                     </NavLink>
                     <NavLink 
                         to="/login" 
                         className="nav-link" 
-                        onClick={toggleMenu}
+                        onClick={handleNavClick}
                     >
                         Login
                     </NavLink>
                     <NavLink 
                         to="/sales" 
                         className="nav-link" 
-                        onClick={toggleMenu}
+                        onClick={handleNavClick}
                     >
                         Sales
                     </NavLink>
                     <NavLink 
                         to="/activity" 
                         className="nav-link" 
-                        onClick={toggleMenu}
+                        onClick={handleNavClick}
                     >
                         Activity Points
                     </NavLink>
                     <NavLink 
                         to="/profile" 
                         className="nav-link" 
-                        onClick={toggleMenu}
+                        onClick={handleNavClick}
                     >
                         Profile
                     </NavLink>

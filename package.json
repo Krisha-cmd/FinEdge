@@ -3,7 +3,19 @@
   "version": "1.0.0",
   "homepage": "https://krisha-cmd.github.io/FinEdge",
   "description": "One Infinity FinEdge Pvt Ltd - Insurance Brokerage Platform",
-  "main": "src/index.js",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.1",
+    "framer-motion": "^10.16.16",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
+    "react-router-dom": "^6.21.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^3.5.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -12,20 +24,11 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "keywords": [
-    "insurance",
-    "brokerage",
-    "react",
-    "frontend"
-  ],
-  "author": "One Infinity FinEdge Pvt Ltd",
-  "license": "MIT",
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-icons": "^5.5.0",
-    "react-router-dom": "^5.3.4",
-    "react-scripts": "^5.0.1"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -40,11 +43,7 @@
     ]
   },
   "devDependencies": {
-    "css-loader": "^7.1.2",
-    "gh-pages": "^6.3.0",
-    "postcss-import": "^16.1.1",
-    "postcss-loader": "^8.1.1",
-    "postcss-preset-env": "^10.2.4",
-    "style-loader": "^4.0.0"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "gh-pages": "^6.1.0"
   }
 }
