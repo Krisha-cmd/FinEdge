@@ -1,32 +1,37 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { FaHeartbeat, FaUserShield, FaCar, FaMotorcycle } from 'react-icons/fa';
+import React, { useState, useRef } from 'react';
 import './InsuranceProducts.css';
+
+// Direct import of PNG files
+import healthIcon from '../assets/health-insurance.png';
+import lifeIcon from '../assets/life-insurance.png';
+import carIcon from '../assets/car-insurance.png';
+import scooterIcon from '../assets/scooter-insurance.png';
 
 const insuranceData = [
     {
         id: 'health',
-        icon: <FaHeartbeat />,
+        icon: healthIcon,
         title: 'Health Insurance',
         description: 'Comprehensive health coverage for you and your family with cashless treatment at 10,000+ hospitals nationwide.',
         features: ['Cashless Hospitalization', '100% Day Care Coverage', 'No Claim Bonus', 'Pre & Post Hospitalization']
     },
     {
         id: 'life',
-        icon: <FaUserShield />,
+        icon: lifeIcon,
         title: 'Life Insurance',
         description: "Secure your family's future with our comprehensive life insurance plans offering both protection and investment benefits.",
         features: ['Term Life Coverage', 'Investment Options', 'Critical Illness Rider', 'Accidental Death Benefit']
     },
     {
         id: 'car',
-        icon: <FaCar />,
+        icon: carIcon,
         title: 'Car Insurance',
         description: 'Protect your vehicle with comprehensive coverage including third-party liability and own damage protection.',
         features: ['Zero Depreciation', 'Roadside Assistance', '24/7 Claim Support', 'NCB Protection']
     },
     {
         id: 'scooter',
-        icon: <FaMotorcycle />,
+        icon: scooterIcon,
         title: 'Two-Wheeler Insurance',
         description: 'Affordable and comprehensive coverage for your two-wheeler with hassle-free claim settlement.',
         features: ['Personal Accident Cover', 'Third Party Liability', 'Quick Claim Settlement', 'Add-on Covers']
@@ -69,7 +74,7 @@ const InsuranceProducts = () => {
                                 onClick={() => handleProductClick(insurance.id)}
                             >
                                 <div className="icon-wrapper">
-                                    {insurance.icon}
+                                    <img src={insurance.icon} alt={insurance.title} className="insurance-icon" />
                                 </div>
                                 <span>{insurance.title}</span>
                             </button>
@@ -90,7 +95,7 @@ const InsuranceProducts = () => {
                                             </ul>
                                         </div>
                                         <div className="details-icon">
-                                            {insurance.icon}
+                                            <img src={insurance.icon} alt={insurance.title} />
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +121,7 @@ const InsuranceProducts = () => {
                                     </ul>
                                 </div>
                                 <div className="details-icon">
-                                    {insurance.icon}
+                                    <img src={insurance.icon} alt={insurance.title} />
                                 </div>
                             </div>
                         </div>

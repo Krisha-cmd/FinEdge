@@ -50,7 +50,7 @@
     color: var(--text-secondary);
     font-size: clamp(1rem, 2vw, 1.2rem);
     max-width: 600px;
-    margin: 0 auto 4rem;
+    margin: 0 auto 2rem;
     position: relative;
     z-index: 1;
 }
@@ -134,8 +134,8 @@
 }
 
 .insurance-icon-box:hover .icon-wrapper::after {
-    width: 60px;
-    height: 60px;
+    width: 8rem;
+    height: 8rem;
     opacity: 0.15;
 }
 
@@ -254,6 +254,19 @@
     opacity: 0.2;
 }
 
+.insurance-icon {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    transition: all 0.4s ease;
+}
+
+.details-icon img {
+    width: 10rem;
+    height: 10rem;
+    opacity: 0.5;
+}
+
 @media (max-width: 968px) {
     .insurance-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -303,6 +316,7 @@
         transform: translateY(0);
         opacity: 1;
     }
+
 }
 
 @media (max-width: 768px) {
@@ -314,6 +328,16 @@
 
     .features-list {
         grid-template-columns: 1fr;
+    }
+
+    .insurance-icon {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .details-icon img {
+        width: 4rem;
+        height: 4rem;
     }
 }
 
@@ -341,7 +365,7 @@
     }
 
     .icon-wrapper {
-        font-size: 2.5rem;
+        font-size: 5rem;
     }
 
     .insurance-icon-box span {
