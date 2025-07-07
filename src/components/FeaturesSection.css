@@ -130,3 +130,33 @@
         height: 300px;
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    .features-section {
+        background: var(--dark-white);
+    }
+
+    .features-background {
+        background-color: rgba(18, 18, 18, 0.9);
+    }
+
+    .features-title {
+        color: var(--dark-primary);
+    }
+
+    .bg-circle{
+        background: rgba(108, 107, 169, 0.1);
+    }
+    .bg-dots {
+        background-image: radial-gradient(var(--dark-primary) 1px, transparent 1px);
+    }
+
+    .feature-card {
+        background: var(--dark-white);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature-description {
+        color: rgba(255, 255, 255, 0.8);
+    }
+}

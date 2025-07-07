@@ -10,4 +10,16 @@
 <body>
     <div id="root"></div>
 </body>
+<script>
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const isLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+
+if (isDark) {
+  console.log('User prefers dark mode');
+} else if (isLight) {
+  console.log('User prefers light mode');
+} else {
+  console.log('User has no preference');
+}
+</script>
 </html>

@@ -17,27 +17,8 @@ body {
   width: 100%;
   background-color: var(--white);
   color: var(--text-primary);
-  /* Force light mode background */
-  forced-color-adjust: none;
-  -webkit-forced-color-adjust: none;
 }
 
-/* Force light mode for form elements */
-input,
-textarea,
-select,
-button {
-  color-scheme: light;
-  forced-color-adjust: none;
-  -webkit-forced-color-adjust: none;
-}
-
-/* Ensure SVGs and images maintain colors */
-img,
-svg {
-  forced-color-adjust: none;
-  -webkit-forced-color-adjust: none;
-}
 
 header {
     background-color: #007acc;
@@ -122,4 +103,12 @@ footer {
     position: relative;
     bottom: 0;
     width: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+body{
+    background-color: var(--dark-white);
+    color: var(--text-primary);
+}
+
 }

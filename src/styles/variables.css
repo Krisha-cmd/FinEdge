@@ -14,9 +14,11 @@
   --white: #ffffff;
   --light-gray: #f8fafc;
   --dark-gray: #4b5563;
+  --dark-white:rgb(18, 18, 18);
   
   /* Text Colors */
   --text-primary: #2d3748;
+  --dark-primary: #6c6ba9;
   --text-secondary: #718096;
   
   /* Gradients */
@@ -29,14 +31,3 @@
   color-scheme: light;
 }
 
-/* Explicitly set colors for dark mode to match light mode */
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #121212;
-    color: #ffffff;
-  }
-
-  h1, p, a {
-    color: #ffffff;
-  }
-}

@@ -46,3 +46,14 @@
         font-size: 1rem;
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    .scroll-to-top {
+        background: var(--dark-white);
+        color: var(--dark-primary);
+    }
+
+    .scroll-to-top svg {
+        color: var(--gradient-overlay);
+    }
+}

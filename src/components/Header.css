@@ -216,3 +216,29 @@
   display: block;
   opacity: 1;
 }
+
+@media(prefers-color-scheme: dark) {
+  .header {
+    background: var(--dark-white);
+    color: var(--text-primary);
+  }
+
+  .mobile-menu-btn {
+    color: var(--dark-primary);
+  }
+  .nav-link {
+    color: var(--dark-primary);
+  }
+
+  .nav-link:hover {
+    background: linear-gradient(135deg, rgba(247, 200, 224, 0.2), rgba(182, 162, 219, 0.2));
+  }
+
+  .nav-link.active {
+    background: linear-gradient(135deg, rgba(247, 200, 224, 0.2), rgba(182, 162, 219, 0.2));
+  }
+
+  .nav{
+    background: var(--dark-white);
+  }
+}

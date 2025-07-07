@@ -164,6 +164,7 @@
 }
 
 @media (max-width: 480px) {
+
   .contact-section {
     padding: 2rem 0.5rem;
   }
@@ -219,5 +220,31 @@
 
   .contact-section::before {
     display: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .contact-section {
+    background: var(--dark-white);
+  }
+
+  .contact-container {
+    background: var(--dark-white);
+    color: var(--text-primary);
+  }
+
+  .contact-input,
+  .contact-textarea {
+    background: var(--dark-white);
+    color: var(--text-primary);
+    border-color: var(--dark-gray);
+  }
+
+  .contact-submit {
+    background: var(--gradient-primary);
+  }
+
+  .contact-info {
+    background: linear-gradient(135deg, rgba(182, 162, 219, 0.1), rgba(76, 122, 255, 0.1));
   }
 }

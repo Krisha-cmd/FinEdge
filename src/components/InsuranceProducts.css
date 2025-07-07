@@ -388,3 +388,44 @@
         max-height: 600px; /* Increased for mobile content */
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    .insurance-section {
+        background: var(--dark-white);
+    }
+
+    .insurance-heading{
+        color: var(--dark-primary);
+    }
+    .insurance-subheading {
+        color: var(--white);
+    }
+
+    .insurance-grid {
+        background:var(--dark-white);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .insurance-icon-box {
+        background: var(--dark-white);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: var(--white);
+    }
+
+    .insurance-icon-box:hover {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .insurance-details{
+        background-color: var(--dark-white);
+    }
+    .details-content {
+        background: linear-gradient(135deg, rgba(32, 4, 18, 0.215), rgba(18, 6, 39, 0.264));
+    }
+
+    .features-list li::before {
+        background: var(--accent);
+    }
+}

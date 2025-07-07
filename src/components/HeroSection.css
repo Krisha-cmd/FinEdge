@@ -2,8 +2,6 @@
     background: var(--gradient-overlay);
     color: var(--white);
     height: calc(100vh - 73px);
-      forced-color-adjust: none;
-  -webkit-forced-color-adjust: none;
     /* Subtract header height */
     display: flex;
     align-items: center;
@@ -298,6 +296,11 @@
         font-size: 1.5rem;
     }
 
+
+
+}
+
+
     @media (prefers-color-scheme: dark) {
     .hero-section {
         background: var(--dark-gradient-overlay);
@@ -311,13 +314,9 @@
     }
 
     .hero-cta-button{
-            background-color: white;
-    color: var(--primary);
-    border: solid 2px var(--primary);
+    background-color: var(--dark-white);
+    color: var(--dark-primary);
+    border: solid 2px var(--dark-primary);
     }
 
 }
-
-}
-
-
