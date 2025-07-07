@@ -1,0 +1,46 @@
+.animated-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* ...copy all animation related styles from HeroSection.css... */
+/* Include all the circle styles, floating icon styles, and animations */
+
+.float-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.15;
+}
+
+.floating-icon svg {
+    width: 4rem;
+    height: 4rem;
+    color: var(--white);
+    opacity: 0.2;
+}
+
+/* Type-specific styles */
+.animated-background.compact {
+    height: 80vh;
+}
+
+.animated-background.compact .animated-circle {
+    transform: scale(0.7);
+}
+
+.animated-background.compact .floating-icon {
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .animated-background.compact {
+        height: 100vh;
+    }
+}

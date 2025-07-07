@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AnimatedBackground from '../components/AnimatedBackground';
 import './Login.css';
 
 const Login = () => {
@@ -62,16 +63,7 @@ const Login = () => {
 
     return (
         <div className="login-container">
-            <div className="login-background">
-                <div className="circle-1"></div>
-                <div className="circle-2"></div>
-                <div className="circle-3"></div>
-                <div className="floating-squares">
-                    {[...Array(10)].map((_, i) => (
-                        <div key={i} className={`square square-${i + 1}`}></div>
-                    ))}
-                </div>
-            </div>
+            <AnimatedBackground type="full" />
             <div className="login-card">
                 <div className="login-header">
                     <h2>Welcome Back</h2>
