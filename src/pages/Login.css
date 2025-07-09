@@ -179,10 +179,10 @@ input:focus {
     }
 }
 
-@media (prefers-color-scheme: dark) {
-    /* .login-container {
-        background: var(--dark-white);
-    } */
+[data-theme="dark"] {
+    .login-container {
+        background: var(--gradient-overlay-dark);
+    }
 
     .login-card {
         background: var(--dark-white);

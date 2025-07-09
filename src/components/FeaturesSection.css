@@ -131,7 +131,7 @@
     }
 }
 
-@media (prefers-color-scheme: dark) {
+[data-theme="dark"] {
     .features-section {
         background: var(--dark-white);
     }

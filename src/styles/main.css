@@ -4,7 +4,6 @@
   box-sizing: border-box;
 }
 
-
 html {
   color-scheme: light;
 }
@@ -13,12 +12,11 @@ body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
-  
   width: 100%;
-  background-color: var(--white);
+  background-color: var(--bg-primary);
   color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
-
 
 header {
     background-color: #007acc;
@@ -105,7 +103,7 @@ footer {
     width: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
+[data-theme="dark"] {
 body{
     background-color: var(--dark-white);
     color: var(--text-primary);

@@ -300,8 +300,7 @@
 
 }
 
-
-    @media (prefers-color-scheme: dark) {
+[data-theme="dark"] {
     .hero-section {
         background: var(--dark-gradient-overlay);
         color: var(--dark-white);

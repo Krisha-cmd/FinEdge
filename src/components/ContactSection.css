@@ -223,7 +223,7 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
+[data-theme="dark"] {
   .contact-section {
     background: var(--dark-white);
   }

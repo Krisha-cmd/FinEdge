@@ -98,9 +98,40 @@
   line-height: 1;
 }
 
-/* Responsive Design */
+/* Add/modify these styles */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav {
+    display: flex;
+    gap: clamp(1rem, 3vw, 1.5rem);
+    align-items: center;
+}
+
+@media (min-width: 769px) {
+    .theme-toggle-container {
+        order: 1; /* Push to end on desktop */
+    }
+}
+
 @media (max-width: 768px) {
-  .header {
+    .header-controls {
+        gap: 0.5rem;
+        order: 2; /* Ensure controls are after logo */
+    }
+
+    .theme-toggle-container {
+        order: -1; /* Pull to start on mobile */
+    }
+
+    .mobile-menu-btn {
+        order: 2; /* Push menu button to end */
+    }
+
+    .header {
     padding: 0.5rem 1rem;
   }
 
@@ -217,7 +248,7 @@
   opacity: 1;
 }
 
-@media(prefers-color-scheme: dark) {
+[data-theme="dark"] {
   .header {
     background: var(--dark-white);
     color: var(--text-primary);

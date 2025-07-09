@@ -389,7 +389,8 @@
     }
 }
 
-@media (prefers-color-scheme: dark) {
+[data-theme="dark"] 
+{
     .insurance-section {
         background: var(--dark-white);
     }

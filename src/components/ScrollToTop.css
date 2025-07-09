@@ -47,7 +47,7 @@
     }
 }
 
-@media (prefers-color-scheme: dark) {
+[data-theme="dark"] {
     .scroll-to-top {
         background: var(--dark-white);
         color: var(--dark-primary);

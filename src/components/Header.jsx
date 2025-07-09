@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import logo from '../assets/logo.jpg';
 import './Header.css';
+import ThemeToggle from './ThemeToggle';
 
 
 const Header = () => {
@@ -52,52 +53,58 @@ const Header = () => {
                         <img src={logo} alt="One Infinity FinEdge Pvt Ltd" />
                     </Link>
                 </div>
-                <button 
-                    className="mobile-menu-btn" 
-                    onClick={toggleMenu}
-                    aria-label="Toggle navigation menu"
-                    aria-expanded={isMenuOpen}
-                >
-                    <span className="menu-icon">{isMenuOpen ? '×' : '☰'}</span>
-                </button>
-                <nav className={`nav ${isMenuOpen ? 'active' : ''}`}>
-                    <NavLink 
-                        to="/" 
-                        className="nav-link" 
-                        onClick={handleNavClick}
-                        end // Replace 'exact' with 'end' for React Router v6
-                    >
-                        Home
-                    </NavLink>
-                    <NavLink 
-                        to="/login" 
-                        className="nav-link" 
-                        onClick={handleNavClick}
-                    >
-                        Login
-                    </NavLink>
-                    <NavLink 
-                        to="/sales" 
-                        className="nav-link" 
-                        onClick={handleNavClick}
-                    >
-                        Sales
-                    </NavLink>
-                    <NavLink 
-                        to="/activity" 
-                        className="nav-link" 
-                        onClick={handleNavClick}
-                    >
-                        Activity Points
-                    </NavLink>
-                    <NavLink 
-                        to="/profile" 
-                        className="nav-link" 
-                        onClick={handleNavClick}
-                    >
-                        Profile
-                    </NavLink>
-                </nav>
+                <div className="nav-container">
+                     <div className="header-controls">
+                    <nav className={`nav ${isMenuOpen ? 'active' : ''}`}>
+                        <NavLink 
+                            to="/" 
+                            className="nav-link" 
+                            onClick={handleNavClick}
+                            end
+                        >
+                            Home
+                        </NavLink>
+                        <NavLink 
+                            to="/login" 
+                            className="nav-link" 
+                            onClick={handleNavClick}
+                        >
+                            Login
+                        </NavLink>
+                        <NavLink 
+                            to="/sales" 
+                            className="nav-link" 
+                            onClick={handleNavClick}
+                        >
+                            Sales
+                        </NavLink>
+                        <NavLink 
+                            to="/activity" 
+                            className="nav-link" 
+                            onClick={handleNavClick}
+                        >
+                            Activity Points
+                        </NavLink>
+                        <NavLink 
+                            to="/profile" 
+                            className="nav-link" 
+                            onClick={handleNavClick}
+                        >
+                            Profile
+                        </NavLink>
+                    </nav>
+                   
+                        <ThemeToggle />
+                        <button 
+                            className="mobile-menu-btn" 
+                            onClick={toggleMenu}
+                            aria-label="Toggle navigation menu"
+                            aria-expanded={isMenuOpen}
+                        >
+                            <span className="menu-icon">{isMenuOpen ? '×' : '☰'}</span>
+                        </button>
+                    </div>
+                </div>
             </div>
             {isMenuOpen && <div className="menu-overlay" onClick={toggleMenu} />}
         </header>

@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import './styles/variables.css';
 import Login from './pages/Login';
 import PageTransition from './components/PageTransition';
+import { ThemeProvider } from './context/ThemeContext';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -48,13 +49,15 @@ function AnimatedRoutes() {
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Header />
-        <AnimatedRoutes />
-        <Footer />
-      </div>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <div className="App">
+          <Header />
+          <AnimatedRoutes />
+          <Footer />
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 
