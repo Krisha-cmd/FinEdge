@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCPc41rg9WfOgnWRBObDkjJwHNz4JBbW7I",
@@ -11,24 +12,8 @@ const firebaseConfig = {
   measurementId: "G-272B4X7G0H"
 };
 
-// Initialize Firebase with custom settings
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-// Set timeout to 30 seconds
-auth.settings = {
-  ...auth.settings,
-  authTokenMaxAge: 30
-};
-
-// Add initialization check
-const isFirebaseInitialized = () => {
-  return new Promise((resolve) => {
-    const unsubscribe = auth.onAuthStateChanged(() => {
-      unsubscribe();
-      resolve(true);
-    });
-  });
-};
-
-export { auth, isFirebaseInitialized };
+export { auth, db };

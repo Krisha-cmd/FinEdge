@@ -12,35 +12,39 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [retryCount, setRetryCount] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(0);
+    const timerRef = useRef(null);
     const recaptchaContainerRef = useRef(null);
     const navigate = useNavigate();
 
+    const setupRecaptcha = () => {
+        try {
+            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                size: 'normal',
+                callback: () => {
+                    // Enable the send OTP button when reCAPTCHA is solved
+                    setLoading(false);
+                },
+                'expired-callback': () => {
+                    setError('reCAPTCHA expired. Please try again.');
+                    if (window.recaptchaVerifier) {
+                        window.recaptchaVerifier.clear();
+                        window.recaptchaVerifier = null;
+                    }
+                }
+            });
+
+            // Render the reCAPTCHA widget
+            window.recaptchaVerifier.render();
+        } catch (error) {
+            console.error('Error setting up reCAPTCHA:', error);
+            setError('Error initializing verification. Please refresh the page.');
+        }
+    };
+
     // Setup reCAPTCHA on component mount
     useEffect(() => {
-        const setupRecaptcha = () => {
-            try {
-                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-                    size: 'normal',
-                    callback: () => {
-                        // Enable the send OTP button when reCAPTCHA is solved
-                        setLoading(false);
-                    },
-                    'expired-callback': () => {
-                        setError('reCAPTCHA expired. Please try again.');
-                        if (window.recaptchaVerifier) {
-                            window.recaptchaVerifier.clear();
-                            window.recaptchaVerifier = null;
-                        }
-                    }
-                });
 
-                // Render the reCAPTCHA widget
-                window.recaptchaVerifier.render();
-            } catch (error) {
-                console.error('Error setting up reCAPTCHA:', error);
-                setError('Error initializing verification. Please refresh the page.');
-            }
-        };
 
         // Initialize reCAPTCHA if it hasn't been initialized
         if (!window.recaptchaVerifier) {
@@ -56,7 +60,35 @@ const Login = () => {
         };
     }, []); // Empty dependency array means this runs once on mount
 
+    const startOtpTimer = () => {
+        setTimeLeft(60); // 2 minutes in seconds
+        if (timerRef.current) clearInterval(timerRef.current);
+        
+        timerRef.current = setInterval(() => {
+            setTimeLeft(prev => {
+                if (prev <= 1) {
+                    clearInterval(timerRef.current);
+                    // Reset verification when timer expires
+                    setVerificationId(null);
+                    setError('OTP expired. Please request a new code.');
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+    };
+
+    // Clear timer on unmount
+    useEffect(() => {
+        return () => {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+        };
+    }, []);
+
     // Send OTP
+
     const handleSendOTP = async (e) => {
         e.preventDefault();
         setError('');
@@ -69,22 +101,35 @@ const Login = () => {
 
             const formattedPhone = `+91${phoneNumber}`;
             const appVerifier = window.recaptchaVerifier;
-            
+
             const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
             setVerificationId(confirmationResult);
             setLoading(false);
+            startOtpTimer(); // Start timer after successful OTP send
         } catch (err) {
             setLoading(false);
-            setError('Error sending OTP. Please try again.');
+
+            // Detect OTP timeout error by Firebase error code or message
+            if (err.code === 'auth/code-expired' || err.message?.toLowerCase().includes('timeout')) {
+                setError('OTP expired. Please request a new code.');
+                setVerificationId(null); // Reset verification flow
+            } else {
+                setError('Error sending OTP. Please try again.');
+            }
             console.error(err);
-            
+
             // Reset reCAPTCHA on error
             if (window.recaptchaVerifier) {
                 window.recaptchaVerifier.clear();
                 window.recaptchaVerifier = null;
             }
+
+            setupRecaptcha(); // Re-setup reCAPTCHA
+            setRetryCount(prev => prev + 1); // Increment retry count
         }
     };
+
+
 
     // Verify OTP
     const handleVerifyOTP = async (e) => {
@@ -105,10 +150,21 @@ const Login = () => {
     const handleRetry = () => {
         setError('');
         setRetryCount(prev => prev + 1);
+
         if (window.recaptchaVerifier) {
             window.recaptchaVerifier.clear();
             window.recaptchaVerifier = null;
         }
+
+        // ✅ Re-setup reCAPTCHA after clearing
+        setupRecaptcha();
+    };
+
+    // Format time for display
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
     return (
@@ -139,8 +195,8 @@ const Login = () => {
                             {error && (
                                 <div className="error-container">
                                     <div className="error-message">{error}</div>
-                                    <button 
-                                        className="retry-button" 
+                                    <button
+                                        className="retry-button"
                                         onClick={handleRetry}
                                         disabled={retryCount >= 3}
                                     >
@@ -156,8 +212,8 @@ const Login = () => {
                         </div>
                         {/* Changed from ref to id */}
                         <div id="recaptcha-container" className="recaptcha-container"></div>
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             className="login-button"
                             disabled={loading || phoneNumber.length !== 10}
                         >
@@ -177,6 +233,19 @@ const Login = () => {
                                 maxLength="6"
                                 required
                             />
+                            <div className="otp-timer">
+                                Time remaining: {formatTime(timeLeft)}
+                            </div>
+                            {timeLeft === 0 && (
+                                <button
+                                    type="button"
+                                    className="resend-button"
+                                    onClick={handleSendOTP}
+                                    disabled={loading}
+                                >
+                                    Resend OTP
+                                </button>
+                            )}
                             {error && <div className="error-message">{error}</div>}
                             {verificationCode && verificationCode.length < 6 && (
                                 <span className="info-message">
@@ -184,10 +253,10 @@ const Login = () => {
                                 </span>
                             )}
                         </div>
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             className="login-button"
-                            disabled={loading || verificationCode.length !== 6}
+                            disabled={loading || verificationCode.length !== 6 || timeLeft === 0}
                         >
                             {loading ? 'Verifying...' : 'Verify OTP'}
                         </button>

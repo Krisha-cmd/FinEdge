@@ -13,9 +13,12 @@ import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Profile from './pages/Profile';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function AnimatedRoutes() {
   const location = useLocation();
+  console.log('Env:', process.env.NODE_ENV); // should be 'production'
+
 
   return (
     <AnimatePresence mode="wait">
@@ -54,17 +57,19 @@ function AnimatedRoutes() {
 
 function App() {
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <Router>
-          <div className="App">
-            <Header />
-            <AnimatedRoutes />
-            <Footer />
-          </div>
-        </Router>
-      </ThemeProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <ThemeProvider>
+          <Router>
+            <div className="App">
+              <Header />
+              <AnimatedRoutes />
+              <Footer />
+            </div>
+          </Router>
+        </ThemeProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

@@ -195,6 +195,39 @@ input:focus {
     justify-content: center;
 }
 
+.otp-timer {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.otp-timer.expiring {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+.resend-button {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
+    width: 100%;
+}
+
+.resend-button:hover:not(:disabled) {
+    color: var(--accent);
+}
+
+.resend-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 /* Dark mode support */
 [data-theme="dark"] {
     .login-container {
