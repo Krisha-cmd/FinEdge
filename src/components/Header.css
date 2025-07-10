@@ -248,6 +248,20 @@
   opacity: 1;
 }
 
+.logout-btn {
+    background: none;
+    border: none;
+}
+
+
+@media (max-width: 768px) {
+    .logout-btn {
+        width: 100%;
+        text-align: left;
+        padding: 0.75rem 1rem;
+    }
+}
+
 [data-theme="dark"] {
   .header {
     background: var(--dark-white);

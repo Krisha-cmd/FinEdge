@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import logo from '../assets/logo.jpg';
 import './Header.css';
 import ThemeToggle from './ThemeToggle';
 
-
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { currentUser, logout } = useAuth();
+    const navigate = useNavigate();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -14,8 +16,17 @@ const Header = () => {
 
     const handleNavClick = () => {
         setIsMenuOpen(false);
-        // Remove no-scroll class when navigating
         document.body.classList.remove('no-scroll');
+    };
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate('/');
+            handleNavClick();
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
     };
 
     // Close menu when clicking outside
@@ -54,46 +65,57 @@ const Header = () => {
                     </Link>
                 </div>
                 <div className="nav-container">
-                     <div className="header-controls">
-                    <nav className={`nav ${isMenuOpen ? 'active' : ''}`}>
-                        <NavLink 
-                            to="/" 
-                            className="nav-link" 
-                            onClick={handleNavClick}
-                            end
-                        >
-                            Home
-                        </NavLink>
-                        <NavLink 
-                            to="/login" 
-                            className="nav-link" 
-                            onClick={handleNavClick}
-                        >
-                            Login
-                        </NavLink>
-                        <NavLink 
-                            to="/sales" 
-                            className="nav-link" 
-                            onClick={handleNavClick}
-                        >
-                            Sales
-                        </NavLink>
-                        <NavLink 
-                            to="/activity" 
-                            className="nav-link" 
-                            onClick={handleNavClick}
-                        >
-                            Activity Points
-                        </NavLink>
-                        <NavLink 
-                            to="/profile" 
-                            className="nav-link" 
-                            onClick={handleNavClick}
-                        >
-                            Profile
-                        </NavLink>
-                    </nav>
-                   
+                    <div className="header-controls">
+                        <nav className={`nav ${isMenuOpen ? 'active' : ''}`}>
+                            <NavLink 
+                                to="/" 
+                                className="nav-link" 
+                                onClick={handleNavClick}
+                                end
+                            >
+                                Home
+                            </NavLink>
+                            
+                            {!currentUser ? (
+                                <NavLink 
+                                    to="/login" 
+                                    className="nav-link" 
+                                    onClick={handleNavClick}
+                                >
+                                    Login
+                                </NavLink>
+                            ) : (
+                                <>
+                                    <NavLink 
+                                        to="/sales" 
+                                        className="nav-link" 
+                                        onClick={handleNavClick}
+                                    >
+                                        Sales
+                                    </NavLink>
+                                    <NavLink 
+                                        to="/activity" 
+                                        className="nav-link" 
+                                        onClick={handleNavClick}
+                                    >
+                                        Activity Points
+                                    </NavLink>
+                                    <NavLink 
+                                        to="/profile" 
+                                        className="nav-link" 
+                                        onClick={handleNavClick}
+                                    >
+                                        Profile
+                                    </NavLink>
+                                    <button 
+                                        className="nav-link logout-btn" 
+                                        onClick={handleLogout}
+                                    >
+                                        Logout
+                                    </button>
+                                </>
+                            )}
+                        </nav>
                         <ThemeToggle />
                         <button 
                             className="mobile-menu-btn" 

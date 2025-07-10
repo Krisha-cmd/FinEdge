@@ -10,6 +10,9 @@ import './styles/variables.css';
 import Login from './pages/Login';
 import PageTransition from './components/PageTransition';
 import { ThemeProvider } from './context/ThemeContext';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
+import Profile from './pages/Profile';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -38,9 +41,11 @@ function AnimatedRoutes() {
           </PageTransition>
         } />
         <Route path="/profile" element={
-          <PageTransition>
-            <div>Profile Page</div>
-          </PageTransition>
+          <PrivateRoute>
+            <PageTransition>
+              <Profile />
+            </PageTransition>
+          </PrivateRoute>
         } />
       </Routes>
     </AnimatePresence>
@@ -49,15 +54,17 @@ function AnimatedRoutes() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <Router>
-        <div className="App">
-          <Header />
-          <AnimatedRoutes />
-          <Footer />
-        </div>
-      </Router>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <Router>
+          <div className="App">
+            <Header />
+            <AnimatedRoutes />
+            <Footer />
+          </div>
+        </Router>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 

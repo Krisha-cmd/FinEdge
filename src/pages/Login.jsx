@@ -1,64 +1,114 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { auth } from '../config/firebase';
 import AnimatedBackground from '../components/AnimatedBackground';
 import './Login.css';
 
 const Login = () => {
-    const [step, setStep] = useState(1);
-    const [mobile, setMobile] = useState('');
-    const [otp, setOtp] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [verificationCode, setVerificationCode] = useState('');
+    const [verificationId, setVerificationId] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [retryCount, setRetryCount] = useState(0);
+    const recaptchaContainerRef = useRef(null);
+    const navigate = useNavigate();
 
-    const handleMobileChange = (e) => {
-        const value = e.target.value;
-        // Only allow numbers
-        if (!/^\d*$/.test(value)) {
-            setError('Please enter numbers only');
-            return;
-        }
-        if (value.length > 10) {
-            return;
-        }
-        setMobile(value);
-        setError('');
-    };
+    // Setup reCAPTCHA on component mount
+    useEffect(() => {
+        const setupRecaptcha = () => {
+            try {
+                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                    size: 'normal',
+                    callback: () => {
+                        // Enable the send OTP button when reCAPTCHA is solved
+                        setLoading(false);
+                    },
+                    'expired-callback': () => {
+                        setError('reCAPTCHA expired. Please try again.');
+                        if (window.recaptchaVerifier) {
+                            window.recaptchaVerifier.clear();
+                            window.recaptchaVerifier = null;
+                        }
+                    }
+                });
 
-    const handleOtpChange = (e) => {
-        const value = e.target.value;
-        // Only allow numbers
-        if (!/^\d*$/.test(value)) {
-            setError('Please enter numbers only');
-            return;
-        }
-        if (value.length > 6) {
-            return;
-        }
-        setOtp(value);
-        setError('');
-    };
+                // Render the reCAPTCHA widget
+                window.recaptchaVerifier.render();
+            } catch (error) {
+                console.error('Error setting up reCAPTCHA:', error);
+                setError('Error initializing verification. Please refresh the page.');
+            }
+        };
 
-    const handleMobileSubmit = (e) => {
+        // Initialize reCAPTCHA if it hasn't been initialized
+        if (!window.recaptchaVerifier) {
+            setupRecaptcha();
+        }
+
+        // Cleanup function
+        return () => {
+            if (window.recaptchaVerifier) {
+                window.recaptchaVerifier.clear();
+                window.recaptchaVerifier = null;
+            }
+        };
+    }, []); // Empty dependency array means this runs once on mount
+
+    // Send OTP
+    const handleSendOTP = async (e) => {
         e.preventDefault();
-        if (mobile.length !== 10) {
-            setError('Please enter a valid 10-digit mobile number');
-            return;
-        }
         setError('');
-        setStep(2);
+        setLoading(true);
+
+        try {
+            if (!window.recaptchaVerifier) {
+                throw new Error('reCAPTCHA not initialized');
+            }
+
+            const formattedPhone = `+91${phoneNumber}`;
+            const appVerifier = window.recaptchaVerifier;
+            
+            const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
+            setVerificationId(confirmationResult);
+            setLoading(false);
+        } catch (err) {
+            setLoading(false);
+            setError('Error sending OTP. Please try again.');
+            console.error(err);
+            
+            // Reset reCAPTCHA on error
+            if (window.recaptchaVerifier) {
+                window.recaptchaVerifier.clear();
+                window.recaptchaVerifier = null;
+            }
+        }
     };
 
-    const handleOtpSubmit = (e) => {
+    // Verify OTP
+    const handleVerifyOTP = async (e) => {
         e.preventDefault();
-        if (otp.length !== 6) {
-            setError('Please enter a valid 6-digit OTP');
-            return;
-        }
         setError('');
-        // Handle OTP verification
+        setLoading(true);
+
+        try {
+            await verificationId.confirm(verificationCode);
+            navigate('/'); // Navigate to home page after successful verification
+        } catch (err) {
+            setError('Invalid verification code. Please try again.');
+            setLoading(false);
+            console.error(err);
+        }
     };
 
-    const handleResendOTP = () => {
-        // Implement OTP resend logic
-        console.log('Resending OTP to:', mobile);
+    const handleRetry = () => {
+        setError('');
+        setRetryCount(prev => prev + 1);
+        if (window.recaptchaVerifier) {
+            window.recaptchaVerifier.clear();
+            window.recaptchaVerifier = null;
+        }
     };
 
     return (
@@ -70,76 +120,76 @@ const Login = () => {
                     <p>Login to access your account</p>
                 </div>
 
-                {step === 1 ? (
-                    <form onSubmit={handleMobileSubmit} className="login-form">
+                {!verificationId ? (
+                    <form onSubmit={handleSendOTP} className="login-form">
                         <div className="form-group">
                             <label htmlFor="mobile">Mobile Number</label>
                             <div className="mobile-input">
                                 <span className="country-code">+91</span>
                                 <input
-                                    type="text"
+                                    type="tel"
                                     id="mobile"
-                                    value={mobile}
-                                    onChange={handleMobileChange}
+                                    value={phoneNumber}
+                                    onChange={(e) => setPhoneNumber(e.target.value)}
+                                    placeholder="Enter mobile number"
+                                    maxLength="10"
                                     required
-                                    placeholder="Enter your mobile number"
                                 />
                             </div>
-                            {error && <span className="error-message">{error}</span>}
-                            {mobile && mobile.length < 10 && (
+                            {error && (
+                                <div className="error-container">
+                                    <div className="error-message">{error}</div>
+                                    <button 
+                                        className="retry-button" 
+                                        onClick={handleRetry}
+                                        disabled={retryCount >= 3}
+                                    >
+                                        Try Again
+                                    </button>
+                                </div>
+                            )}
+                            {phoneNumber && phoneNumber.length < 10 && (
                                 <span className="info-message">
-                                    {`${10 - mobile.length} digits remaining`}
+                                    {`${10 - phoneNumber.length} digits remaining`}
                                 </span>
                             )}
                         </div>
+                        {/* Changed from ref to id */}
+                        <div id="recaptcha-container" className="recaptcha-container"></div>
                         <button 
                             type="submit" 
                             className="login-button"
-                            disabled={mobile.length !== 10}
+                            disabled={loading || phoneNumber.length !== 10}
                         >
-                            Get OTP
+                            {loading ? 'Sending...' : 'Send OTP'}
                         </button>
                     </form>
                 ) : (
-                    <form onSubmit={handleOtpSubmit} className="login-form">
+                    <form onSubmit={handleVerifyOTP} className="login-form">
                         <div className="form-group">
-                            <label htmlFor="otp">Enter OTP</label>
+                            <label htmlFor="otp">Verification Code</label>
                             <input
                                 type="text"
                                 id="otp"
-                                value={otp}
-                                onChange={handleOtpChange}
+                                value={verificationCode}
+                                onChange={(e) => setVerificationCode(e.target.value)}
+                                placeholder="Enter OTP"
+                                maxLength="6"
                                 required
-                                placeholder="Enter 6-digit OTP"
                             />
-                            {error && <span className="error-message">{error}</span>}
-                            {otp && otp.length < 6 && (
+                            {error && <div className="error-message">{error}</div>}
+                            {verificationCode && verificationCode.length < 6 && (
                                 <span className="info-message">
-                                    {`${6 - otp.length} digits remaining`}
+                                    {`${6 - verificationCode.length} digits remaining`}
                                 </span>
                             )}
-                            <p className="mobile-display">OTP sent to: +91 {mobile}</p>
                         </div>
                         <button 
                             type="submit" 
                             className="login-button"
-                            disabled={otp.length !== 6}
+                            disabled={loading || verificationCode.length !== 6}
                         >
-                            Verify OTP
-                        </button>
-                        <button 
-                            type="button" 
-                            className="resend-button"
-                            onClick={handleResendOTP}
-                        >
-                            Resend OTP
-                        </button>
-                        <button 
-                            type="button" 
-                            className="back-button"
-                            onClick={() => setStep(1)}
-                        >
-                            Change Number
+                            {loading ? 'Verifying...' : 'Verify OTP'}
                         </button>
                     </form>
                 )}
