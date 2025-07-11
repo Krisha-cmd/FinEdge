@@ -4,9 +4,11 @@ import { useAuth } from '../context/AuthContext';
 import logo from '../assets/logo.jpg';
 import './Header.css';
 import ThemeToggle from './ThemeToggle';
+import { scrollToSection } from '../utils/scrollHelper';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [activeFragment, setActiveFragment] = useState('');
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
 
@@ -26,6 +28,19 @@ const Header = () => {
             handleNavClick();
         } catch (error) {
             console.error('Error logging out:', error);
+        }
+    };
+
+    const handleFragmentClick = (e, sectionId) => {
+        e.preventDefault();
+        handleNavClick();
+        if (window.location.pathname !== '/') {
+            navigate('/');
+            setTimeout(() => {
+                scrollToSection(sectionId);
+            }, 100);
+        } else {
+            scrollToSection(sectionId);
         }
     };
 
@@ -56,6 +71,29 @@ const Header = () => {
         };
     }, [isMenuOpen]);
 
+    // Scroll detection useEffect
+    useEffect(() => {
+        const handleScroll = () => {
+            const sections = ['features', 'products', 'contact'];
+            const scrollPosition = window.scrollY + 100; // offset for header
+
+            for (const section of sections) {
+                const element = document.getElementById(section);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 100 && rect.bottom >= 100) {
+                        setActiveFragment(section);
+                        return;
+                    }
+                }
+            }
+            setActiveFragment('');
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <header className="header">
             <div className="header-container">
@@ -79,35 +117,23 @@ const Header = () => {
                             {!currentUser && (
                                 <>
                                     <NavLink 
-                                        to="/#features" 
-                                        className="nav-link" 
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
-                                            handleNavClick();
-                                        }}
+                                        to="/features"
+                                        className={`nav-link ${activeFragment === 'features'}`}
+                                        onClick={(e) => handleFragmentClick(e, 'features')}
                                     >
                                         Features
                                     </NavLink>
                                     <NavLink 
-                                        to="/#products" 
-                                        className="nav-link" 
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
-                                            handleNavClick();
-                                        }}
+                                        to="/products"
+                                        className={`nav-link ${activeFragment === 'products' }`}
+                                        onClick={(e) => handleFragmentClick(e, 'products')}
                                     >
                                         Products
                                     </NavLink>
                                     <NavLink 
-                                        to="/#contact" 
-                                        className="nav-link" 
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-                                            handleNavClick();
-                                        }}
+                                        to="/contact"
+                                        className={`nav-link ${activeFragment === 'contact' ? 'active' : ''}`}
+                                        onClick={(e) => handleFragmentClick(e, 'contact')}
                                     >
                                         Contact
                                     </NavLink>

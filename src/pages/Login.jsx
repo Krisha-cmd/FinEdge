@@ -5,6 +5,7 @@ import { auth } from '../config/firebase';
 import AnimatedBackground from '../components/AnimatedBackground';
 import './Login.css';
 import config from '../config/api.js';
+import { scrollToSection } from '../utils/scrollHelper';
 
 const Login = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -90,6 +91,17 @@ const Login = () => {
         };
     }, []);
 
+        const handleFragmentClick = (e, sectionId) => {
+            e.preventDefault();
+            if (window.location.pathname !== '/') {
+                navigate('/');
+                setTimeout(() => {
+                    scrollToSection(sectionId);
+                }, 100);
+            } else {
+                scrollToSection(sectionId);
+            }
+        };
     // Send OTP
 
     const handleSendOTP = async (e) => {
@@ -240,14 +252,11 @@ const Login = () => {
                                 <div className="error-message">
                                     This number is not registered. 
                                     <Link 
-                                        to="/#contact" 
+                                        to="/#contact"  // Change this to just "/"
                                         className="contact-link"
-                                        onClick={() => {
-                                            const contactSection = document.getElementById('contact');
-                                            if (contactSection) {
-                                                contactSection.scrollIntoView({ behavior: 'smooth' });
-                                            }
-                                        }}
+                                        // onClick={(e) => {
+                                        //     handleFragmentClick(e, 'contact');
+                                        // }}
                                     >
                                         Contact us
                                     </Link> 

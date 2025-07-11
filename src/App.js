@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import './styles/theme.css';
 import Header from './components/Header';
@@ -27,7 +27,11 @@ function AnimatedRoutes() {
           <PageTransition>
             <Home />
           </PageTransition>
-        } />
+        }>
+          <Route path="/#features" element={<Home />} />
+          <Route path="/#products" element={<Home />} />
+          <Route path="/#contact" element={<Home />} />
+        </Route>
         <Route path="/login" element={
           <PageTransition>
             <Login />
