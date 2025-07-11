@@ -138,6 +138,10 @@ input {
 }
 
 .error-message {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
     color: #dc3545;
     font-size: 0.875rem;
     margin-top: 0.5rem;
@@ -270,4 +274,15 @@ input:focus {
     .recaptcha-container {
         filter: invert(1) hue-rotate(180deg);
     }
+}
+
+.contact-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    margin: 0 4px;
+}
+
+.contact-link:hover {
+    text-decoration: underline;
 }

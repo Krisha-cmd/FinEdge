@@ -9,9 +9,15 @@ const Home = () => {
     return (
         <div className="home">
             <HeroSection />
-            <FeaturesSection />
-            <InsuranceProducts />
-            <ContactSection />
+            <div id="features">
+                <FeaturesSection />
+            </div>
+            <div id="products">
+                <InsuranceProducts />
+            </div>
+            <div id="contact">
+                <ContactSection />
+            </div>
             <ScrollToTop />
         </div>
     );

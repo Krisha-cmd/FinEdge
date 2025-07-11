@@ -76,15 +76,52 @@ const Header = () => {
                                 Home
                             </NavLink>
                             
-                            {!currentUser ? (
-                                <NavLink 
-                                    to="/login" 
-                                    className="nav-link" 
-                                    onClick={handleNavClick}
-                                >
-                                    Login
-                                </NavLink>
-                            ) : (
+                            {!currentUser && (
+                                <>
+                                    <NavLink 
+                                        to="/#features" 
+                                        className="nav-link" 
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+                                            handleNavClick();
+                                        }}
+                                    >
+                                        Features
+                                    </NavLink>
+                                    <NavLink 
+                                        to="/#products" 
+                                        className="nav-link" 
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+                                            handleNavClick();
+                                        }}
+                                    >
+                                        Products
+                                    </NavLink>
+                                    <NavLink 
+                                        to="/#contact" 
+                                        className="nav-link" 
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                                            handleNavClick();
+                                        }}
+                                    >
+                                        Contact
+                                    </NavLink>
+                                    <NavLink 
+                                        to="/login" 
+                                        className="nav-link" 
+                                        onClick={handleNavClick}
+                                    >
+                                        Login
+                                    </NavLink>
+                                </>
+                            )}
+                            
+                            {currentUser && (
                                 <>
                                     <NavLink 
                                         to="/sales" 

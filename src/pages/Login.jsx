@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from '../config/firebase';
 import AnimatedBackground from '../components/AnimatedBackground';
@@ -238,7 +238,20 @@ const Login = () => {
                             </div>
                             {phoneNumber.length === 10 && !isRegisteredUser && (
                                 <div className="error-message">
-                                    This number is not registered. Please sign up first.
+                                    This number is not registered. 
+                                    <Link 
+                                        to="/#contact" 
+                                        className="contact-link"
+                                        onClick={() => {
+                                            const contactSection = document.getElementById('contact');
+                                            if (contactSection) {
+                                                contactSection.scrollIntoView({ behavior: 'smooth' });
+                                            }
+                                        }}
+                                    >
+                                        Contact us
+                                    </Link> 
+                                    {" "}if you want to join our network of insurance advisors.
                                 </div>
                             )}
                             {error && (
