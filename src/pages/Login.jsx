@@ -4,6 +4,7 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from '../config/firebase';
 import AnimatedBackground from '../components/AnimatedBackground';
 import './Login.css';
+import config from '../config/api.js';
 
 const Login = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -13,6 +14,8 @@ const Login = () => {
     const [error, setError] = useState('');
     const [retryCount, setRetryCount] = useState(0);
     const [timeLeft, setTimeLeft] = useState(0);
+    const [isRegisteredUser, setIsRegisteredUser] = useState(false);
+    const [userData, setUserData] = useState(null);
     const timerRef = useRef(null);
     const recaptchaContainerRef = useRef(null);
     const navigate = useNavigate();
@@ -95,6 +98,15 @@ const Login = () => {
         setLoading(true);
 
         try {
+            // Reverify user registration before sending OTP
+            await verifyUserRegistration(phoneNumber);
+            
+            if (!isRegisteredUser) {
+                setError('User not registered');
+                setLoading(false);
+                return;
+            }
+
             if (!window.recaptchaVerifier) {
                 throw new Error('reCAPTCHA not initialized');
             }
@@ -128,8 +140,6 @@ const Login = () => {
             setRetryCount(prev => prev + 1); // Increment retry count
         }
     };
-
-
 
     // Verify OTP
     const handleVerifyOTP = async (e) => {
@@ -167,6 +177,40 @@ const Login = () => {
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
+    // Add user verification function
+    const verifyUserRegistration = async (phone) => {
+        try {
+            const response = await fetch(`${config.baseURL}${config.endpoints.checkUser}/${phone}`);
+            const data = await response.json();
+
+            if (data.status === 'success') {
+                setIsRegisteredUser(data.userRegistered);
+                if (data.userRegistered) {
+                    setUserData(data.user);
+                }
+            } else {
+                setError('Error verifying user status');
+            }
+        } catch (err) {
+            console.error('User verification error:', err);
+            setError('Error checking user registration');
+        }
+    };
+
+    // Modify phone number input handler
+    const handlePhoneNumberChange = (e) => {
+        const value = e.target.value;
+        setPhoneNumber(value);
+        
+        // Check user registration when 10 digits are entered
+        if (value.length === 10) {
+            verifyUserRegistration(value);
+        } else {
+            setIsRegisteredUser(false);
+            setUserData(null);
+        }
+    };
+
     return (
         <div className="login-container">
             <AnimatedBackground type="full" />
@@ -186,12 +230,17 @@ const Login = () => {
                                     type="tel"
                                     id="mobile"
                                     value={phoneNumber}
-                                    onChange={(e) => setPhoneNumber(e.target.value)}
+                                    onChange={handlePhoneNumberChange}
                                     placeholder="Enter mobile number"
                                     maxLength="10"
                                     required
                                 />
                             </div>
+                            {phoneNumber.length === 10 && !isRegisteredUser && (
+                                <div className="error-message">
+                                    This number is not registered. Please sign up first.
+                                </div>
+                            )}
                             {error && (
                                 <div className="error-container">
                                     <div className="error-message">{error}</div>
@@ -215,7 +264,7 @@ const Login = () => {
                         <button
                             type="submit"
                             className="login-button"
-                            disabled={loading || phoneNumber.length !== 10}
+                            disabled={loading || phoneNumber.length !== 10 || !isRegisteredUser}
                         >
                             {loading ? 'Sending...' : 'Send OTP'}
                         </button>
