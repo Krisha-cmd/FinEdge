@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { FaMobile, FaEnvelope } from 'react-icons/fa';
 import config from '../config/api';
 import './Profile.css';
 
@@ -46,86 +47,56 @@ const Profile = () => {
                     {profileData?.name?.charAt(0)}
                 </div>
                 <h1>{profileData?.name}</h1>
-                <span className="profile-code">{profileData?.coCode}</span>
+                <div className="profile-code">{profileData?.coCode || 'Not provided'}</div>
             </div>
 
             <div className="profile-grid">
-                <div className="contact-info">
-                    <h3>Contact Information</h3>
-                    <div className="card-content">
-                        <div className="info-item">
-                            <i className="icon phone-icon">📱</i>
-                            <div>
-                                <label>Mobile</label>
-                                <p>{profileData?.mobile}</p>
-                            </div>
+                <h2>Contact Information</h2>
+                <div className="info-section">
+                    <div className="info-item">
+                        <FaMobile className="info-icon" />
+                        <div className="info-content">
+                            <label>Mobile</label>
+                            <p>{profileData?.mobile || 'Not provided'}</p>
                         </div>
-                        <div className="info-item">
-                            <i className="icon email-icon">📧</i>
-                            <div>
-                                <label>Email</label>
-                                <p>{profileData?.email}</p>
-                            </div>
+                    </div>
+                    <div className="info-item">
+                        <FaEnvelope className="info-icon" />
+                        <div className="info-content">
+                            <label>Email</label>
+                            <p>{profileData?.email || 'Not provided'}</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="identity-info">
-                    <h3>Identity Details</h3>
-                    <div className="card-content">
-                        <div className="info-item">
-                            <i className="icon pan-icon">🪪</i>
-                            <div>
-                                <label>PAN</label>
-                                <p>{profileData?.pan}</p>
-                            </div>
+                <h2>Identity Details</h2>
+                <div className="info-section">
+                    <div className="info-item">
+                        <div className="info-content">
+                            <label>PAN</label>
+                            <p>{profileData?.pan || 'Not provided'}</p>
                         </div>
-                        <div className="info-item">
-                            <i className="icon aadhar-icon">📄</i>
-                            <div>
-                                <label>Aadhar</label>
-                                <p>{profileData?.aadhar}</p>
-                            </div>
+                    </div>
+                    <div className="info-item">
+                        <div className="info-content">
+                            <label>Aadhar</label>
+                            <p>{profileData?.aadhar || 'Not provided'}</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="profile-card banking-info">
-                    <h3>Banking Details</h3>
-                    <div className="card-content">
-                        <div className="info-item">
-                            <i className="icon bank-icon">🏦</i>
-                            <div>
-                                <label>Bank Name</label>
-                                <p>{profileData?.bankName}</p>
-                            </div>
-                        </div>
-                        <div className="info-item">
-                            <i className="icon account-icon">💳</i>
-                            <div>
-                                <label>Account Number</label>
-                                <p>{profileData?.bankAccount}</p>
-                            </div>
+                <h2>Banking Information</h2>
+                <div className="info-section">
+                    <div className="info-item">
+                        <div className="info-content">
+                            <label>Bank Name</label>
+                            <p>{profileData?.bankName || 'Not provided'}</p>
                         </div>
                     </div>
-                </div>
-
-                <div className="profile-card meta-info">
-                    <h3>Additional Information</h3>
-                    <div className="card-content">
-                        <div className="info-item">
-                            <i className="icon date-icon">📅</i>
-                            <div>
-                                <label>Joining Date</label>
-                                <p>{profileData?.joiningDate}</p>
-                            </div>
-                        </div>
-                        <div className="info-item">
-                            <i className="icon last-login-icon">🕒</i>
-                            <div>
-                                <label>Last Login</label>
-                                <p>{new Date(currentUser?.metadata?.lastSignInTime).toLocaleString()}</p>
-                            </div>
+                    <div className="info-item">
+                        <div className="info-content">
+                            <label>Account Number</label>
+                            <p>{profileData?.bankAccount || 'Not provided'}</p>
                         </div>
                     </div>
                 </div>
