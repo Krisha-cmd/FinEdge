@@ -50,7 +50,7 @@
 .hero-content p {
     font-size: 1.4rem;
     margin-bottom: 2.5rem;
-    color: var(--pink-light);
+    color: var(--pink-light-2);
     opacity: 0;
     animation: fadeSlideUp 0.8s ease forwards 0.3s;
 }

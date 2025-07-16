@@ -1,38 +1,43 @@
 :root {
   /* Light theme variables */
-  --primary: #2b3990;
-  --secondary: #6a4c93;
-  --accent: #8f3985;
-  --pink-light: #f7c8e0;
-  --pink: #ff6b95;
-  --purple-light: #b6a2db;
-  --blue-light: #4c7aff;
+  --primary: #1e2b4f; /* Dark navy from logo & text */
+  --secondary: #a67839; /* Elegant bronze/gold from name & accents */
+  --accent: #d1b16a; /* Light gold used in dividing line and gradients */
+  --background: #f2f2f2; /* Light textured background */
+  --text-primary: #3a3a3a; /* Dark neutral for body text */
+  --text-secondary: #6b6b6b;
   --white: #ffffff;
-  --light-gray: #f8fafc;
-  --dark-gray: #4b5563;
-  --text-primary: #2d3748;
-  --text-secondary: #718096;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  
+   --pink-light: #a67839;
+   --pink-light-2: #1e2b4f;
+   /* --pink-light:#1e2b4f; */
+      --pink-light: #a67839;
+   --purple-light: #a67839;
+   --blue-light: #a67839;
+   --pink: #d1b16a;
+  --light-gray: #e0e0e0;
+  --dark-gray: #555555;
+
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #4c7aff 0%, #8f3985 100%);
-  --gradient-hover: linear-gradient(135deg, #8f3985 0%, #4c7aff 100%);
-  --gradient-overlay: linear-gradient(rgba(43, 57, 144, 0.9), rgba(143, 57, 133, 0.9));
+  --gradient-primary: linear-gradient(135deg, #d1b16a 0%, #a67839 100%);
+  --gradient-hover: linear-gradient(135deg, #a67839 0%, #1e2b4f 100%);
+  --gradient-overlay: linear-gradient(rgba(30, 43, 79, 0.9), rgba(166, 120, 57, 0.9));
 }
 
 [data-theme="dark"] {
   --bg-primary: #121212;
-  --dark-primary:#6c6ba9;
   --bg-secondary: #1e1e1e;
-  --dark-white: #121212;
-  --text-primary: #ffffff;
-  --text-secondary: #a0aec0;
-  --light-gray: #2d3748;
-  --dark-gray: #4a5568;
+  --dark-primary: #2c3c61;
+  --dark-gold: #a67839;
+  --text-primary: #f8f8f8;
+  --text-secondary: #c0c0c0;
+  --light-gray: #2d2d2d;
+  --dark-gray: #444;
+   --dark-white: #121212;
+   --pink-light: #a67839;
+   --pink-light-2: #a67839;
+   --purple-light: #a67839;
+   --blue-light: #a67839;
+   --pink: #d1b16a;
   --gradient-overlay: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.95));
-  --gradient-overlay-dark: linear-gradient(rgba(43, 57, 144, 0.9), rgba(143, 57, 133, 0.9));
+  --gradient-overlay-dark: linear-gradient(rgba(30, 43, 79, 0.9), rgba(166, 120, 57, 0.9));
 }
-
-
-
