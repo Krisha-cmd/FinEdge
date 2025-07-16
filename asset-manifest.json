@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/FinEdge/static/css/main.05f7155c.css",
-    "main.js": "/FinEdge/static/js/main.4b93b6da.js",
-    "static/media/logo.jpg": "/FinEdge/static/media/logo.cf0291364d48626c0de0.jpg",
+    "main.css": "/FinEdge/static/css/main.9d53792d.css",
+    "main.js": "/FinEdge/static/js/main.94864db6.js",
+    "static/media/logo.jpg": "/FinEdge/static/media/logo.2c7fff09dd105fb263e6.jpg",
     "static/media/scooter-insurance.png": "/FinEdge/static/media/scooter-insurance.70d2d047b67e2cf1e17a.png",
     "static/media/car-insurance.png": "/FinEdge/static/media/car-insurance.e54c10182ae528111bea.png",
     "static/media/health-insurance.png": "/FinEdge/static/media/health-insurance.3683da16f5e26e4e5fbf.png",
     "static/media/life-insurance.png": "/FinEdge/static/media/life-insurance.8b5dda21025fe67b6278.png",
     "index.html": "/FinEdge/index.html",
-    "main.05f7155c.css.map": "/FinEdge/static/css/main.05f7155c.css.map",
-    "main.4b93b6da.js.map": "/FinEdge/static/js/main.4b93b6da.js.map"
+    "main.9d53792d.css.map": "/FinEdge/static/css/main.9d53792d.css.map",
+    "main.94864db6.js.map": "/FinEdge/static/js/main.94864db6.js.map"
   },
   "entrypoints": [
-    "static/css/main.05f7155c.css",
-    "static/js/main.4b93b6da.js"
+    "static/css/main.9d53792d.css",
+    "static/js/main.94864db6.js"
   ]
 }
