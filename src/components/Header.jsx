@@ -5,12 +5,38 @@ import logo from '../assets/logo.jpg';
 import './Header.css';
 import ThemeToggle from './ThemeToggle';
 import { scrollToSection } from '../utils/scrollHelper';
+import config from '../config/api';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeFragment, setActiveFragment] = useState('');
     const { currentUser, logout } = useAuth();
+    const [userName, setUserName] = useState('Profile');
     const navigate = useNavigate();
+
+    // Add this useEffect to fetch user name
+    useEffect(() => {
+        const fetchUserName = async () => {
+            if (currentUser) {
+                try {
+                    const token = await currentUser.getIdToken();
+                    const response = await fetch(`${config.baseURL}${config.endpoints.profile}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        setUserName(data.profile.name);
+                    }
+                } catch (error) {
+                    console.error('Error fetching user name:', error);
+                }
+            }
+        };
+
+        fetchUserName();
+    }, [currentUser]);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -168,7 +194,7 @@ const Header = () => {
                                         className="nav-link" 
                                         onClick={handleNavClick}
                                     >
-                                        Profile
+                                        {userName}
                                     </NavLink>
                                     <button 
                                         className="nav-link logout-btn" 
