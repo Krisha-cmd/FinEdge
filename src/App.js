@@ -55,10 +55,10 @@ function AnimatedRoutes() {
             </PageTransition>
           </PrivateRoute>
         } />
-                <Route path="/signup" element={
-            <PageTransition>
-              <SignUp />
-            </PageTransition>
+        <Route path="/signup" element={
+          <PageTransition>
+            <SignUp />
+          </PageTransition>
         } />
       </Routes>
     </AnimatePresence>
@@ -70,7 +70,7 @@ function App() {
     <ErrorBoundary>
       <AuthProvider>
         <ThemeProvider>
-          <Router>
+          <Router basename={process.env.PUBLIC_URL}>
             <div className="App">
               <Header />
               <AnimatedRoutes />
