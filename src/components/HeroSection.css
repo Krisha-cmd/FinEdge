@@ -49,10 +49,19 @@
 
 .hero-content p {
     font-size: 1.4rem;
-    margin-bottom: 2.5rem;
+    margin: 1rem 0;
+    max-width: 600px;
+    line-height: 1.6;
     color: var(--pink-light-2);
     opacity: 0;
     animation: fadeSlideUp 0.8s ease forwards 0.3s;
+}
+
+.hero-content .highlight-text {
+    color: var(--accent);
+    font-weight: 500;
+    margin-top: 1rem;
+    font-size: 1.2rem;
 }
 
 .hero-cta-button {

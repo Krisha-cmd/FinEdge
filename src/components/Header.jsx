@@ -175,7 +175,7 @@ const Header = () => {
                             
                             {currentUser && (
                                 <>
-                                    <NavLink 
+                                    {/* <NavLink 
                                         to="/sales" 
                                         className="nav-link" 
                                         onClick={handleNavClick}
@@ -188,7 +188,7 @@ const Header = () => {
                                         onClick={handleNavClick}
                                     >
                                         Activity Points
-                                    </NavLink>
+                                    </NavLink> */}
                                     <NavLink 
                                         to="/profile" 
                                         className="nav-link" 

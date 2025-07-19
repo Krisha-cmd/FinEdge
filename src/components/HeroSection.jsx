@@ -25,15 +25,27 @@ const HeroSection = () => {
         >
             <AnimatedBackground type="full" />
             <div className="hero-content">
-                <h1 className="animate-in">Welcome to One Infinity FinEdge Pvt Ltd</h1>
-                <p className="animate-in">Your trusted insurance broker connecting you with the best policies.</p>
-                {!currentUser && (
-                    <button 
-                        onClick={handleGetStarted} 
-                        className="hero-cta-button animate-in"
-                    >
-                        Get Started
-                    </button>
+                {currentUser ? (
+                    <>
+                        <h1 className="animate-in">Thanks for visiting us!</h1>
+                        <p className="animate-in">
+                            Our website is currently under development and will be live by Independence Day.
+                        </p>
+                        <p className="animate-in highlight-text">
+                            We will be proudly revealing our esteemed partners on the platform
+                        </p>
+                    </>
+                ) : (
+                    <>
+                        <h1 className="animate-in">Welcome to Ten Infinity</h1>
+                        <p className="animate-in">Your trusted insurance broker connecting you with the best policies.</p>
+                        <button 
+                            onClick={handleGetStarted} 
+                            className="hero-cta-button animate-in"
+                        >
+                            Get Started
+                        </button>
+                    </>
                 )}
             </div>
         </motion.div>

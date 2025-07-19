@@ -8,7 +8,7 @@ const Footer = () => {
             <div className="footer-content">
                 <div className="footer-section">
                     <h3 className="footer-title">About Us</h3>
-                    <p className="footer-about">One Infinity FinEdge Pvt Ltd is your trusted partner in insurance solutions.</p>
+                    <p className="footer-about">Ten Infinity is your trusted insurance broker.</p>
                 </div>
                 <div className="footer-section">
                     <h3 className="footer-title">Quick Links</h3>
@@ -21,14 +21,14 @@ const Footer = () => {
                 <div className="footer-section">
                     <h3 className="footer-title">Contact Info</h3>
                     <div className="footer-contact">
-                        <p>📍 123 Infinity Road, Suite 456</p>
-                        <p>📧 info@oneinfinityfinedge.com</p>
-                        <p>📞 (123) 456-7890</p>
+                        {/* <p>📍 123 Infinity Road, Suite 456</p> */}
+                        <p>📧 info@teninfinity.com</p>
+                        <p>📞 +91 75750 74333</p>
                     </div>
                 </div>
             </div>
             <div className="footer-bottom">
-                <p>&copy; {new Date().getFullYear()} One Infinity FinEdge Pvt Ltd. All rights reserved.</p>
+                <p>&copy; {new Date().getFullYear()} Ten Infinity. All rights reserved.</p>
             </div>
         </footer>
     );

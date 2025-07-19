@@ -14,6 +14,7 @@ import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Profile from './pages/Profile';
 import ErrorBoundary from './components/ErrorBoundary';
+import SignUp from './pages/SignUp';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -53,6 +54,11 @@ function AnimatedRoutes() {
               <Profile />
             </PageTransition>
           </PrivateRoute>
+        } />
+                <Route path="/signup" element={
+            <PageTransition>
+              <SignUp />
+            </PageTransition>
         } />
       </Routes>
     </AnimatePresence>

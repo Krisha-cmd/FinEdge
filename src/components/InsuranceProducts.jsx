@@ -12,29 +12,29 @@ const insuranceData = [
         id: 'health',
         icon: healthIcon,
         title: 'Health Insurance',
-        description: 'Comprehensive health coverage for you and your family with cashless treatment at 10,000+ hospitals nationwide.',
-        features: ['Cashless Hospitalization', '100% Day Care Coverage', 'No Claim Bonus', 'Pre & Post Hospitalization']
+        description: 'Health insurance is not a new term in today’s world. Above this, the global pandemic has also knocked on our door to secure ourselves from unwanted situations. This is where healthcare insurance comes into play. This is a mutual agreement between a policyholder and insurance company to offer compensation as a medical expense in case you meet with an accident or get hospitalized.',
+        features: ['Family Health Insurance', 'Senior Citizen Health Insurance', 'Critical Illness Health Insurance', 'Personal Accident Health Insurance']
     },
     {
         id: 'life',
         icon: lifeIcon,
         title: 'Life Insurance',
-        description: "Secure your family's future with our comprehensive life insurance plans offering both protection and investment benefits.",
-        features: ['Term Life Coverage', 'Investment Options', 'Critical Illness Rider', 'Accidental Death Benefit']
+        description: "Life insurance is an agreement between you and the insurance company where you pay money to an insurance company regularly and in return, they promise to give a certain amount of money to the people you choose (called beneficiaries) after your death. It acts like a safety net for your loved ones.",
+        features: ['Replacing lost income', 'Paying off debts', "Children's education", 'Everyday expenses']
     },
     {
         id: 'car',
         icon: carIcon,
         title: 'Car Insurance',
-        description: 'Protect your vehicle with comprehensive coverage including third-party liability and own damage protection.',
+        description: "Car insurance or four wheeler insurance provides you with financial covers for the damage of your car from accidents, theft, and fires. It also protects you from expenses caused by natural disasters, animal attacks, and damage caused by people. Plus, it covers any legal costs if you harm someone else or their property. In India, it's required by law to have at least third-party car insurance to drive legally.",
         features: ['Zero Depreciation', 'Roadside Assistance', '24/7 Claim Support', 'NCB Protection']
     },
     {
         id: 'scooter',
         icon: scooterIcon,
         title: 'Two-Wheeler Insurance',
-        description: 'Affordable and comprehensive coverage for your two-wheeler with hassle-free claim settlement.',
-        features: ['Personal Accident Cover', 'Third Party Liability', 'Quick Claim Settlement', 'Add-on Covers']
+        description: "Bike insurance, also known as two-wheeler insurance, provides you with financial protection for your bike against various unforeseen situations such as accidents, theft, fire, strikes, natural disasters, third-party damages, and more. A bike insurance policy covers all kinds of bikes, including motorcycles, electric bikes, mopeds, and scooters.",
+         features: ['Personal Accident Cover', 'Third Party Liability', 'Quick Claim Settlement', 'Add-on Covers']
     }
 ];
 

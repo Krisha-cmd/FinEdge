@@ -2,203 +2,87 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from '../config/firebase';
+import { useAuth } from '../context/AuthContext'; // Add this import
 import AnimatedBackground from '../components/AnimatedBackground';
 import './Login.css';
 import config from '../config/api.js';
 import { scrollToSection } from '../utils/scrollHelper';
 
 const Login = () => {
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [verificationCode, setVerificationCode] = useState('');
-    const [verificationId, setVerificationId] = useState(null);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [retryCount, setRetryCount] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(0);
     const [isRegisteredUser, setIsRegisteredUser] = useState(false);
-    const [userData, setUserData] = useState(null);
-    const timerRef = useRef(null);
-    const recaptchaContainerRef = useRef(null);
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const [isEmailValid, setIsEmailValid] = useState(false);
+    const [verificationAttempted, setVerificationAttempted] = useState(false);
+    const { login, resetPassword } = useAuth(); // Add this line to destructure auth methods
     const navigate = useNavigate();
 
-    const setupRecaptcha = () => {
-        try {
-            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-                size: 'normal',
-                callback: () => {
-                    // Enable the send OTP button when reCAPTCHA is solved
-                    setLoading(false);
-                },
-                'expired-callback': () => {
-                    setError('reCAPTCHA expired. Please try again.');
-                    if (window.recaptchaVerifier) {
-                        window.recaptchaVerifier.clear();
-                        window.recaptchaVerifier = null;
-                    }
-                }
-            });
-
-            // Render the reCAPTCHA widget
-            window.recaptchaVerifier.render();
-        } catch (error) {
-            console.error('Error setting up reCAPTCHA:', error);
-            setError('Error initializing verification. Please refresh the page.');
-        }
+    const validateEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
     };
 
-    // Setup reCAPTCHA on component mount
-    useEffect(() => {
-
-
-        // Initialize reCAPTCHA if it hasn't been initialized
-        if (!window.recaptchaVerifier) {
-            setupRecaptcha();
-        }
-
-        // Cleanup function
-        return () => {
-            if (window.recaptchaVerifier) {
-                window.recaptchaVerifier.clear();
-                window.recaptchaVerifier = null;
-            }
-        };
-    }, []); // Empty dependency array means this runs once on mount
-
-    const startOtpTimer = () => {
-        setTimeLeft(60); // 2 minutes in seconds
-        if (timerRef.current) clearInterval(timerRef.current);
-        
-        timerRef.current = setInterval(() => {
-            setTimeLeft(prev => {
-                if (prev <= 1) {
-                    clearInterval(timerRef.current);
-                    // Reset verification when timer expires
-                    setVerificationId(null);
-                    setError('OTP expired. Please request a new code.');
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
+    const handleEmailChange = (e) => {
+        const newEmail = e.target.value;
+        setEmail(newEmail);
+        setIsEmailValid(validateEmail(newEmail));
+        // Reset registration status and verification attempt when email changes
+        setIsRegisteredUser(false);
+        setVerificationAttempted(false);
     };
 
-    // Clear timer on unmount
-    useEffect(() => {
-        return () => {
-            if (timerRef.current) {
-                clearInterval(timerRef.current);
-            }
-        };
-    }, []);
-
-        const handleFragmentClick = (e, sectionId) => {
-            e.preventDefault();
-            if (window.location.pathname !== '/') {
-                navigate('/');
-                setTimeout(() => {
-                    scrollToSection(sectionId);
-                }, 100);
-            } else {
-                scrollToSection(sectionId);
-            }
-        };
-    // Send OTP
-
-    const handleSendOTP = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
         try {
-            // Reverify user registration before sending OTP
-            await verifyUserRegistration(phoneNumber);
-            
-            if (!isRegisteredUser) {
-                setError('User not registered');
-                setLoading(false);
-                return;
-            }
-
-            if (!window.recaptchaVerifier) {
-                throw new Error('reCAPTCHA not initialized');
-            }
-
-            const formattedPhone = `+91${phoneNumber}`;
-            const appVerifier = window.recaptchaVerifier;
-
-            const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
-            setVerificationId(confirmationResult);
-            setLoading(false);
-            startOtpTimer(); // Start timer after successful OTP send
+            await login(email, password);
+            navigate('/');
         } catch (err) {
-            setLoading(false);
-
-            // Detect OTP timeout error by Firebase error code or message
-            if (err.code === 'auth/code-expired' || err.message?.toLowerCase().includes('timeout')) {
-                setError('OTP expired. Please request a new code.');
-                setVerificationId(null); // Reset verification flow
-            } else {
-                setError('Error sending OTP. Please try again.');
-            }
+            setError(err.message.includes('auth/wrong-password')
+                ? 'Invalid password'
+                : 'Error logging in. Please try again.');
             console.error(err);
-
-            // Reset reCAPTCHA on error
-            if (window.recaptchaVerifier) {
-                window.recaptchaVerifier.clear();
-                window.recaptchaVerifier = null;
-            }
-
-            setupRecaptcha(); // Re-setup reCAPTCHA
-            setRetryCount(prev => prev + 1); // Increment retry count
+        } finally {
+            setLoading(false);
         }
     };
 
-    // Verify OTP
-    const handleVerifyOTP = async (e) => {
+    const handleForgotPassword = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
         try {
-            await verificationId.confirm(verificationCode);
-            navigate('/'); // Navigate to home page after successful verification
+            await resetPassword(email);
+            setError('Password reset email sent! Please check your inbox.');
         } catch (err) {
-            setError('Invalid verification code. Please try again.');
-            setLoading(false);
+            setError('Error sending password reset email. Please try again.');
             console.error(err);
+        } finally {
+            setLoading(false);
         }
     };
 
-    const handleRetry = () => {
-        setError('');
-        setRetryCount(prev => prev + 1);
-
-        if (window.recaptchaVerifier) {
-            window.recaptchaVerifier.clear();
-            window.recaptchaVerifier = null;
+    const verifyUserRegistration = async () => {
+        if (!email) {
+            setError('Please enter an email address');
+            return;
         }
 
-        // ✅ Re-setup reCAPTCHA after clearing
-        setupRecaptcha();
-    };
-
-    // Format time for display
-    const formatTime = (seconds) => {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins}:${secs.toString().padStart(2, '0')}`;
-    };
-
-    // Add user verification function
-    const verifyUserRegistration = async (phone) => {
         try {
-            const response = await fetch(`${config.baseURL}${config.endpoints.checkUser}/${phone}`);
+            setVerificationAttempted(true);
+            const response = await fetch(`${config.baseURL}${config.endpoints.checkUser}/${encodeURIComponent(email)}`);
             const data = await response.json();
 
             if (data.status === 'success') {
                 setIsRegisteredUser(data.userRegistered);
-                if (data.userRegistered) {
-                    setUserData(data.user);
+                if (!data.userRegistered) {
+                    setError('This email is not registered');
                 }
             } else {
                 setError('Error verifying user status');
@@ -209,130 +93,99 @@ const Login = () => {
         }
     };
 
-    // Modify phone number input handler
-    const handlePhoneNumberChange = (e) => {
-        const value = e.target.value;
-        setPhoneNumber(value);
-        
-        // Check user registration when 10 digits are entered
-        if (value.length === 10) {
-            verifyUserRegistration(value);
-        } else {
-            setIsRegisteredUser(false);
-            setUserData(null);
-        }
-    };
-
     return (
         <div className="login-container">
             <AnimatedBackground type="full" />
             <div className="login-card">
                 <div className="login-header">
-                    <h2>Welcome Back</h2>
-                    <p>Login to access your account</p>
+                    <h2>{showForgotPassword ? 'Reset Password' : 'Welcome Back'}</h2>
+                    <p>{showForgotPassword
+                        ? 'Enter your email to reset password'
+                        : 'Login to access your account'}
+                    </p>
                 </div>
 
-                {!verificationId ? (
-                    <form onSubmit={handleSendOTP} className="login-form">
-                        <div className="form-group">
-                            <label htmlFor="mobile">Mobile Number</label>
-                            <div className="mobile-input">
-                                <span className="country-code">+91</span>
-                                <input
-                                    type="tel"
-                                    id="mobile"
-                                    value={phoneNumber}
-                                    onChange={handlePhoneNumberChange}
-                                    placeholder="Enter mobile number"
-                                    maxLength="10"
-                                    required
-                                />
-                            </div>
-                            {phoneNumber.length === 10 && !isRegisteredUser && (
-                                <div className="error-message">
-                                    This number is not registered. 
-                                    <Link 
-                                        to="/#contact"  // Change this to just "/"
-                                        className="contact-link"
-                                        // onClick={(e) => {
-                                        //     handleFragmentClick(e, 'contact');
-                                        // }}
-                                    >
-                                        Contact us
-                                    </Link> 
-                                    {" "}if you want to join our network of insurance advisors.
-                                </div>
-                            )}
-                            {error && (
-                                <div className="error-container">
-                                    <div className="error-message">{error}</div>
-                                    <button
-                                        className="retry-button"
-                                        onClick={handleRetry}
-                                        disabled={retryCount >= 3}
-                                    >
-                                        Try Again
-                                    </button>
-                                </div>
-                            )}
-                            {phoneNumber && phoneNumber.length < 10 && (
-                                <span className="info-message">
-                                    {`${10 - phoneNumber.length} digits remaining`}
-                                </span>
-                            )}
-                        </div>
-                        {/* Changed from ref to id */}
-                        <div id="recaptcha-container" className="recaptcha-container"></div>
-                        <button
-                            type="submit"
-                            className="login-button"
-                            disabled={loading || phoneNumber.length !== 10 || !isRegisteredUser}
-                        >
-                            {loading ? 'Sending...' : 'Send OTP'}
-                        </button>
-                    </form>
-                ) : (
-                    <form onSubmit={handleVerifyOTP} className="login-form">
-                        <div className="form-group">
-                            <label htmlFor="otp">Verification Code</label>
+                <form onSubmit={showForgotPassword ? handleForgotPassword : handleLogin}
+                    className="login-form">
+                    <div className="form-group">
+                        <label htmlFor="email">Email Address</label>
+                        <div className="email-input">
                             <input
-                                type="text"
-                                id="otp"
-                                value={verificationCode}
-                                onChange={(e) => setVerificationCode(e.target.value)}
-                                placeholder="Enter OTP"
-                                maxLength="6"
+                                type="email"
+                                id="email"
+                                value={email}
+                                onChange={handleEmailChange}
+                                placeholder="Enter email address"
                                 required
                             />
-                            <div className="otp-timer">
-                                Time remaining: {formatTime(timeLeft)}
-                            </div>
-                            {timeLeft === 0 && (
-                                <button
-                                    type="button"
-                                    className="resend-button"
-                                    onClick={handleSendOTP}
-                                    disabled={loading}
-                                >
-                                    Resend OTP
-                                </button>
-                            )}
-                            {error && <div className="error-message">{error}</div>}
-                            {verificationCode && verificationCode.length < 6 && (
-                                <span className="info-message">
-                                    {`${6 - verificationCode.length} digits remaining`}
-                                </span>
-                            )}
                         </div>
                         <button
-                            type="submit"
-                            className="login-button"
-                            disabled={loading || verificationCode.length !== 6 || timeLeft === 0}
+                            type="button"
+                            className={`verify-button ${isEmailValid ? 'active' : ''}`}
+                            onClick={verifyUserRegistration}
+                            disabled={!isEmailValid}
                         >
-                            {loading ? 'Verifying...' : 'Verify OTP'}
+                            Verify Email
                         </button>
-                    </form>
-                )}
+                    </div>
+
+                    {/* Password field only shows after verification */}
+                    {!showForgotPassword && isRegisteredUser && (
+                        <div className="form-group">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter password"
+                                required
+                            />
+                        </div>
+                    )}
+
+                    {/* {error && <div className="error-message">{error}</div>} */}
+
+                    {!isRegisteredUser && verificationAttempted && (
+                        <div className="error-message">
+                            This email is not onboarded.
+                            <Link
+                                to="/signup"
+                                className="contact-link"
+                            >
+                                Sign up
+                            </Link>
+                            {" "}if you want to join our network.
+                        </div>
+                    )}
+
+                    <button
+                        type="submit"
+                        className="login-button"
+                        disabled={loading || (!showForgotPassword && (!isRegisteredUser || !password))}
+                    >
+                        {loading
+                            ? 'Processing...'
+                            : showForgotPassword
+                                ? 'Reset Password'
+                                : 'Login'
+                        }
+                    </button>
+
+                    <button
+                        type="button"
+                        className="forgot-password-button"
+                        onClick={() => {
+                            setShowForgotPassword(!showForgotPassword);
+                            setError('');
+                        }}
+                    >
+                        {showForgotPassword
+                            ? 'Back to Login'
+                            : 'Forgot Password?'
+                        }
+                    </button>
+                </form>
             </div>
         </div>
     );

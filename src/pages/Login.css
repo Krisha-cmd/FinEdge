@@ -228,8 +228,61 @@ input:focus {
 }
 
 .resend-button:disabled {
-    opacity: 0.5;
     cursor: not-allowed;
+        background: var(--dark-white);
+        color: var(--dark-primary);
+}
+
+.verify-button {
+    cursor: not-allowed;
+    transition: all 0.3s ease;
+}
+
+.verify-button.active {
+    opacity: 1;
+    cursor: pointer;
+    background: var(--gradient-primary);
+}
+
+.verify-button.active:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Add these new styles */
+.verify-button {
+
+       cursor: not-allowed;
+        background: var(--light-gray);
+        color: var(--white);
+    border: none;
+        padding: 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.verify-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.forgot-password-button {
+    background: none;
+    border: none;
+    color: var(--primary);
+    padding: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 1rem;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.forgot-password-button:hover {
+    color: var(--accent);
 }
 
 /* Dark mode support */
@@ -265,6 +318,14 @@ input:focus {
         color: var(--dark-primary);
     }
 
+    .verify-button:disabled {
+        background: var(--dark-white);
+        color: var(--dark-primary);
+    }
+
+    .contact-link {
+        color: var(--accent);
+    }
 
     .resend-button,
     .back-button {
