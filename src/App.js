@@ -15,6 +15,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Profile from './pages/Profile';
 import ErrorBoundary from './components/ErrorBoundary';
 import SignUp from './pages/SignUp';
+import SetPassword from './pages/SetPassword'; // Assuming you have this component for success modal
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -60,6 +61,8 @@ function AnimatedRoutes() {
             <SignUp />
           </PageTransition>
         } />
+
+        <Route path="/set-password" element={<PageTransition><SetPassword /></PageTransition>} />
       </Routes>
     </AnimatePresence>
   );
@@ -70,7 +73,7 @@ function App() {
     <ErrorBoundary>
       <AuthProvider>
         <ThemeProvider>
-          <Router basename={process.env.PUBLIC_URL}>
+          <Router>
             <div className="App">
               <Header />
               <AnimatedRoutes />

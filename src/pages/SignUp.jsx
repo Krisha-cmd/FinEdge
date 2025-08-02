@@ -13,12 +13,9 @@ const SignUp = () => {
         name: '',
         phone: '',
         email: '',
-        password: '',
         panNo: '',
         aadharNo: '',
         referralId: '',
-        bankName: '',
-        bankAccount: '',
         reason: ''
     });
     const [loading, setLoading] = useState(false);
@@ -82,9 +79,6 @@ const SignUp = () => {
                 setLoading(false);
                 return;
             }
-
-            // Create Firebase auth user
-            await createUserWithEmailAndPassword(auth, formData.email, formData.password);
 
             // Send registration email
             const emailData = {
@@ -163,19 +157,6 @@ const SignUp = () => {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="password">Password *</label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                                minLength="6"
-                            />
-                        </div>
-
-                        <div className="form-group">
                             <label htmlFor="panNo">PAN Number</label>
                             <input
                                 type="text"
@@ -198,7 +179,7 @@ const SignUp = () => {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="referralId">Referral ID</label>
+                            <label htmlFor="referralId">Referral Name</label>
                             <input
                                 type="text"
                                 id="referralId"
@@ -208,38 +189,17 @@ const SignUp = () => {
                             />
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="bankName">Bank Name</label>
-                            <input
-                                type="text"
-                                id="bankName"
-                                name="bankName"
-                                value={formData.bankName}
-                                onChange={handleChange}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="bankAccount">Bank Account Number</label>
-                            <input
-                                type="text"
-                                id="bankAccount"
-                                name="bankAccount"
-                                value={formData.bankAccount}
-                                onChange={handleChange}
-                            />
-                        </div>
                     </div>
 
                     <div className="form-group full-width">
-                        <label htmlFor="reason">Why do you want to join us? *</label>
+                        <label htmlFor="reason">How did you know about us? *</label>
                         <textarea
                             id="reason"
                             name="reason"
                             value={formData.reason}
                             onChange={handleChange}
                             required
-                            rows="4"
+                            rows="2"
                         />
                     </div>
 

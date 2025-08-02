@@ -4,8 +4,8 @@ import './FeaturesSection.css';
 const FeaturesSection = () => {
     const features = [
         {
-            title: 'Expert Insurance Brokers',
-            description: 'Our team of experienced brokers helps you find the best insurance policies tailored to your needs.',
+            title: 'Expert Insurance Advisors',
+            description: '',
             icon: '🛡️'
         },
         {

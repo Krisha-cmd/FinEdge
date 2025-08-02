@@ -1,8 +1,8 @@
 {
   "name": "one-infinity-finedge",
   "version": "1.0.0",
-  "homepage": "https://www.teninfinity.com",
-  "description": "One Infinity FinEdge Pvt Ltd - Insurance Brokerage Platform",
+  "homepage": ".",
+  "description": "Ten Infinity Pvt Ltd",
   "private": true,
   "dependencies": {
     "@firebase/auth": "^1.10.8",

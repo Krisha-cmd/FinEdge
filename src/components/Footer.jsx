@@ -8,7 +8,7 @@ const Footer = () => {
             <div className="footer-content">
                 <div className="footer-section">
                     <h3 className="footer-title">About Us</h3>
-                    <p className="footer-about">Ten Infinity is your trusted insurance broker.</p>
+                    <p className="footer-about"></p>
                 </div>
                 <div className="footer-section">
                     <h3 className="footer-title">Quick Links</h3>

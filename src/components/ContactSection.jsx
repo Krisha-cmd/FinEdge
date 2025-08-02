@@ -6,7 +6,9 @@ const ContactSection = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        message: ''
+        message: '',
+        phone:'',
+        referer: ''
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -43,7 +45,9 @@ const ContactSection = () => {
                 setFormData({
                     name: '',
                     email: '',
-                    message: ''
+                    message: '',
+                    phone: '',
+                    referer: ''
                 });
             } else {
                 throw new Error(data.message);
@@ -87,6 +91,30 @@ const ContactSection = () => {
                         />
                     </div>
                     <div className="contact-form-group">
+                        <label className="contact-label" htmlFor="email">Phone</label>
+                        <input 
+                            className="contact-input" 
+                            type="phone" 
+                            id="phone" 
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            required 
+                        />
+                    </div>
+                    <div className="contact-form-group">
+                        <label className="contact-label" htmlFor="message">How did you find us?</label>
+                        <textarea 
+                            className="contact-textarea" 
+                            id="referer" 
+                            name="referer"
+                            value={formData.referer}
+                            onChange={handleChange}
+                            rows="2"
+                            placeholder='Please let us know how you found us, e.g., Google, Social Media, Referral, etc.'
+                        ></textarea>
+                    </div>
+                                        <div className="contact-form-group">
                         <label className="contact-label" htmlFor="message">Message</label>
                         <textarea 
                             className="contact-textarea" 
@@ -94,6 +122,8 @@ const ContactSection = () => {
                             name="message"
                             value={formData.message}
                             onChange={handleChange}
+                            rows="2"
+                            placeholder='Your message here...'
                             required
                         ></textarea>
                     </div>
