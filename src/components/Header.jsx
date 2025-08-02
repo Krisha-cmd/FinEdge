@@ -131,48 +131,60 @@ const Header = () => {
                 <div className="nav-container">
                     <div className="header-controls">
                         <nav className={`nav ${isMenuOpen ? 'active' : ''}`}>
-                            <NavLink 
-                                to="/" 
-                                className="nav-link" 
+                            <NavLink
+                                to="/"
+                                className="nav-link"
                                 onClick={handleNavClick}
                                 end
                             >
                                 Home
                             </NavLink>
-                            
+
                             {!currentUser && (
                                 <>
-                                    <NavLink 
+                                    <NavLink
                                         to="/features"
                                         className={`nav-link ${activeFragment === 'features'}`}
-                                        onClick={(e) => handleFragmentClick(e, 'features')}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleFragmentClick(e, 'features');
+                                            window.location.href = '/#/#features';
+                                        }}
                                     >
                                         Features
                                     </NavLink>
-                                    <NavLink 
+                                    <NavLink
                                         to="/products"
-                                        className={`nav-link ${activeFragment === 'products' }`}
-                                        onClick={(e) => handleFragmentClick(e, 'products')}
+                                        className={`nav-link ${activeFragment === 'products'}`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleFragmentClick(e, 'products');
+                                            window.location.href = '/#/#products';
+                                        }}
                                     >
                                         Products
                                     </NavLink>
-                                    <NavLink 
+                                    <NavLink
                                         to="/contact"
                                         className={`nav-link ${activeFragment === 'contact' ? 'active' : ''}`}
-                                        onClick={(e) => handleFragmentClick(e, 'contact')}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleFragmentClick(e, 'contact');
+                                            window.location.href = '/#/#contact';
+                                        }}
                                     >
                                         Contact
                                     </NavLink>
-                                    <NavLink 
-                                        to="/login" 
-                                        className="nav-link" 
+                                    <NavLink
+                                        to="/login"
+                                        className="nav-link"
                                         onClick={handleNavClick}
                                     >
                                         Login
                                     </NavLink>
                                 </>
                             )}
-                            
+
                             {currentUser && (
                                 <>
                                     {/* <NavLink 
@@ -189,15 +201,15 @@ const Header = () => {
                                     >
                                         Activity Points
                                     </NavLink> */}
-                                    <NavLink 
-                                        to="/profile" 
-                                        className="nav-link" 
+                                    <NavLink
+                                        to="/profile"
+                                        className="nav-link"
                                         onClick={handleNavClick}
                                     >
                                         {userName}
                                     </NavLink>
-                                    <button 
-                                        className="nav-link logout-btn" 
+                                    <button
+                                        className="nav-link logout-btn"
                                         onClick={handleLogout}
                                     >
                                         Logout
@@ -206,8 +218,8 @@ const Header = () => {
                             )}
                         </nav>
                         <ThemeToggle />
-                        <button 
-                            className="mobile-menu-btn" 
+                        <button
+                            className="mobile-menu-btn"
                             onClick={toggleMenu}
                             aria-label="Toggle navigation menu"
                             aria-expanded={isMenuOpen}
