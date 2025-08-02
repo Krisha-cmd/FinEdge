@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import './styles/theme.css';
 import Header from './components/Header';
@@ -73,7 +73,7 @@ function App() {
     <ErrorBoundary>
       <AuthProvider>
         <ThemeProvider>
-          <Router basename={process.env.PUBLIC_URL || '/'}>
+          <Router>
             <div className="App">
               <Header />
               <AnimatedRoutes />
