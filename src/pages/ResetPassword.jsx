@@ -16,31 +16,27 @@ const ResetPassword = () => {
     const { confirmPasswordReset } = useAuth();
 
     useEffect(() => {
-        // Try to get oobCode from URL parameters
-        const searchParams = new URLSearchParams(location.search);
-        const code = searchParams.get('oobCode');
+        const searchParams = new URLSearchParams(window.location.search);
+        let code = searchParams.get('oobCode');
         
-        // If no code in direct URL, check for Firebase action URL parameters
+        // Check if we're coming from Firebase action URL
         if (!code) {
-            const actionUrl = new URL(window.location.href);
-            const actionCode = actionUrl.searchParams.get('oobCode');
-            if (actionCode) {
-                setOobCode(actionCode);
-                setValidCode(true);
-                // Clean up the URL
-                window.history.replaceState({}, '', '/reset-password');
-                return;
+            const mode = searchParams.get('mode');
+            if (mode === 'resetPassword') {
+                code = searchParams.get('oobCode');
             }
-        } else {
-            setOobCode(code);
-            setValidCode(true);
-            return;
         }
 
-        setError('Invalid password reset link');
-        setTimeout(() => {
-            navigate('/login');
-        }, 3000);
+        if (code) {
+            setOobCode(code);
+            setValidCode(true);
+            // Don't clean up URL as it contains necessary Firebase parameters
+        } else {
+            setError('Invalid password reset link');
+            setTimeout(() => {
+                navigate('/login');
+            }, 3000);
+        }
     }, [location, navigate]);
 
     const handleSubmit = async (e) => {
@@ -65,16 +61,19 @@ const ResetPassword = () => {
         setLoading(true);
 
         try {
-            await confirmPasswordReset(oobCode, newPassword);
-            // Show success message using proper UI instead of alert
+            await confirmPasswordReset(oobCode, newPassword); // Remove auth parameter since it's handled in the context
             navigate('/login', { 
                 state: { 
                     message: 'Password reset successful! Please login with your new password.'
                 }
             });
         } catch (error) {
-            setError(error.message || 'Failed to reset password. Please try again.');
             console.error('Reset password error:', error);
+            if (error.code === 'auth/invalid-action-code') {
+                setError('Invalid or expired reset link. Please request a new one.');
+            } else {
+                setError('Failed to reset password. Please try again.');
+            }
         } finally {
             setLoading(false);
         }

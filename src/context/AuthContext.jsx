@@ -83,11 +83,7 @@ export const AuthProvider = ({ children }) => {
         }
         
         try {
-            // First verify the code
-            await verifyPasswordResetCode(auth, oobCode);
-            // Then confirm the password reset
-            await applyActionCode(auth, oobCode);
-            await confirmPasswordReset(auth, oobCode, newPassword);
+            await auth.confirmPasswordReset(oobCode, newPassword);
             return true;
         } catch (error) {
             console.error('Confirm password reset error:', error);
