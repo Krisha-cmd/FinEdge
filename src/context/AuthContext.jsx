@@ -77,19 +77,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const confirmPasswordReset = async (oobCode, newPassword) => {
-        if (!oobCode) {
-            throw new Error('No reset code provided');
-        }
-        
-        try {
-            await auth.confirmPasswordReset(oobCode, newPassword);
-            return true;
-        } catch (error) {
-            console.error('Confirm password reset error:', error);
-            throw error;
-        }
-    };
 
     const value = {
         currentUser,

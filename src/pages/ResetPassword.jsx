@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { auth } from '../config/firebase';
+import { confirmPasswordReset } from 'firebase/auth';
 import AnimatedBackground from '../components/AnimatedBackground';
 import './ResetPassword.css';
 
@@ -13,28 +15,20 @@ const ResetPassword = () => {
     const [oobCode, setOobCode] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
-    const { confirmPasswordReset } = useAuth();
-
 
     useEffect(() => {
-    const hash = window.location.hash; // e.g. "#/reset-password?oobCode=XYZ123"
-    const queryIndex = hash.indexOf('?');
-    let code = null;
-
-    if (queryIndex !== -1) {
-        const queryString = hash.substring(queryIndex); // "?oobCode=XYZ123"
-        const params = new URLSearchParams(queryString);
-        code = params.get('oobCode');
-    }
-
-    if (code) {
-        setOobCode(code);
-        setValidCode(true);
-    } else {
-        setError('Invalid or expired reset link');
-        setTimeout(() => navigate('/login'), 3000);
-    }
-}, [navigate]);
+        // Extract oobCode from URL parameters
+        const searchParams = new URLSearchParams(window.location.search);
+        const code = searchParams.get('oobCode');
+        
+        if (code) {
+            setOobCode(code);
+            setValidCode(true);
+        } else {
+            setError('Invalid or expired reset link');
+            setTimeout(() => navigate('/login'), 3000);
+        }
+    }, [navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -58,9 +52,10 @@ const ResetPassword = () => {
         setLoading(true);
 
         try {
-            await confirmPasswordReset(oobCode, newPassword); // Remove auth parameter since it's handled in the context
-            navigate('/login', { 
-                state: { 
+            // Use Firebase's confirmPasswordReset directly
+            await confirmPasswordReset(auth, oobCode, newPassword);
+            navigate('/login', {
+                state: {
                     message: 'Password reset successful! Please login with your new password.'
                 }
             });
