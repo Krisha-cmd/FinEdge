@@ -15,29 +15,26 @@ const ResetPassword = () => {
     const location = useLocation();
     const { confirmPasswordReset } = useAuth();
 
-    useEffect(() => {
-        const searchParams = new URLSearchParams(window.location.search);
-        let code = searchParams.get('oobCode');
-        
-        // Check if we're coming from Firebase action URL
-        if (!code) {
-            const mode = searchParams.get('mode');
-            if (mode === 'resetPassword') {
-                code = searchParams.get('oobCode');
-            }
-        }
 
-        if (code) {
-            setOobCode(code);
-            setValidCode(true);
-            // Don't clean up URL as it contains necessary Firebase parameters
-        } else {
-            setError('Invalid password reset link');
-            setTimeout(() => {
-                navigate('/login');
-            }, 3000);
-        }
-    }, [location, navigate]);
+    useEffect(() => {
+    const hash = window.location.hash; // e.g. "#/reset-password?oobCode=XYZ123"
+    const queryIndex = hash.indexOf('?');
+    let code = null;
+
+    if (queryIndex !== -1) {
+        const queryString = hash.substring(queryIndex); // "?oobCode=XYZ123"
+        const params = new URLSearchParams(queryString);
+        code = params.get('oobCode');
+    }
+
+    if (code) {
+        setOobCode(code);
+        setValidCode(true);
+    } else {
+        setError('Invalid or expired reset link');
+        setTimeout(() => navigate('/login'), 3000);
+    }
+}, [navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -142,3 +139,4 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
+
