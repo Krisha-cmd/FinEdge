@@ -5,6 +5,8 @@ const config = {
         profile: '/user/profile',
         contactUs: '/contact',
         sendRegistrationEmail: '/send-registration',
+        login: '/user/login',
+        resetPassword: '/user/reset-password'
     }
 };
 

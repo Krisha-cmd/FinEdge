@@ -16,6 +16,7 @@ import Profile from './pages/Profile';
 import ErrorBoundary from './components/ErrorBoundary';
 import SignUp from './pages/SignUp';
 import SetPassword from './pages/SetPassword'; // Assuming you have this component for success modal
+import ResetPassword from './pages/ResetPassword'; // Import the ResetPassword component
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -63,6 +64,11 @@ function AnimatedRoutes() {
         } />
 
         <Route path="/set-password" element={<PageTransition><SetPassword /></PageTransition>} />
+        <Route path="/reset-password" element={
+          <PageTransition>
+            <ResetPassword />
+          </PageTransition>
+        } />
       </Routes>
     </AnimatePresence>
   );

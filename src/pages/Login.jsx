@@ -13,6 +13,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const [isRegisteredUser, setIsRegisteredUser] = useState(false);
     const [showForgotPassword, setShowForgotPassword] = useState(false);
     const [isEmailValid, setIsEmailValid] = useState(false);
@@ -43,7 +44,7 @@ const Login = () => {
             await login(email, password);
             navigate('/');
         } catch (err) {
-            setError(err.message.includes('auth/wrong-password')
+            setError(err.message.includes('auth/invalid-credential')
                 ? 'Invalid password'
                 : 'Error logging in. Please try again.');
             console.error(err);
@@ -58,11 +59,30 @@ const Login = () => {
         setLoading(true);
 
         try {
+            // First verify the email exists in our system
+            const verifyResponse = await fetch(`${config.baseURL}${config.endpoints.checkUser}/${encodeURIComponent(email)}`);
+            const verifyData = await verifyResponse.json();
+
+            if (!verifyData.userRegistered) {
+                setError('Email not found in our system');
+                return;
+            }
+
+            // Use Firebase's password reset
             await resetPassword(email);
-            setError('Password reset email sent! Please check your inbox.');
+            
+            setSuccess('Password reset link sent! Please check your email (including spam folder).');
+            setError('');
+
+            // Reset form after 3 seconds
+            setTimeout(() => {
+                setShowForgotPassword(false);
+                setSuccess('');
+            }, 3000);
+
         } catch (err) {
-            setError('Error sending password reset email. Please try again.');
-            console.error(err);
+            console.error('Password reset error:', err);
+            setError('Unable to send reset email. Please try again later.');
         } finally {
             setLoading(false);
         }
@@ -105,8 +125,7 @@ const Login = () => {
                     </p>
                 </div>
 
-                <form onSubmit={showForgotPassword ? handleForgotPassword : handleLogin}
-                    className="login-form">
+                <form onSubmit={showForgotPassword ? handleForgotPassword : handleLogin} className="login-form">
                     <div className="form-group">
                         <label htmlFor="email">Email Address</label>
                         <div className="email-input">
@@ -119,17 +138,20 @@ const Login = () => {
                                 required
                             />
                         </div>
-                        <button
-                            type="button"
-                            className={`verify-button ${isEmailValid ? 'active' : ''}`}
-                            onClick={verifyUserRegistration}
-                            disabled={!isEmailValid}
-                        >
-                            Verify Email
-                        </button>
+                        {/* Only show verify button when not in forgot password mode */}
+                        {!showForgotPassword && (
+                            <button
+                                type="button"
+                                className={`verify-button ${isEmailValid ? 'active' : ''}`}
+                                onClick={verifyUserRegistration}
+                                disabled={!isEmailValid}
+                            >
+                                Verify Email
+                            </button>
+                        )}
                     </div>
 
-                    {/* Password field only shows after verification */}
+                    {/* Password field only shows after verification for login */}
                     {!showForgotPassword && isRegisteredUser && (
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
@@ -144,15 +166,15 @@ const Login = () => {
                         </div>
                     )}
 
-                    {/* {error && <div className="error-message">{error}</div>} */}
+                    {/* Show error and success messages */}
+                    {error && <div className="error-message">{error}</div>}
+                    {success && <div className="success-message">{success}</div>}
 
+                    {/* Show not registered message */}
                     {!isRegisteredUser && verificationAttempted && (
                         <div className="error-message">
                             This email is not onboarded.
-                            <Link
-                                to="/signup"
-                                className="contact-link"
-                            >
+                            <Link to="/signup" className="contact-link">
                                 Sign up
                             </Link>
                             {" "}if you want to join our network.
@@ -162,29 +184,34 @@ const Login = () => {
                     <button
                         type="submit"
                         className="login-button"
-                        disabled={loading || (!showForgotPassword && (!isRegisteredUser || !password))}
+                        disabled={loading || 
+                            (showForgotPassword ? !isRegisteredUser : (!isRegisteredUser || !password))}
                     >
                         {loading
                             ? 'Processing...'
                             : showForgotPassword
-                                ? 'Reset Password'
+                                ? 'Send Reset Link'
                                 : 'Login'
                         }
                     </button>
 
-                    <button
-                        type="button"
-                        className="forgot-password-button"
-                        onClick={() => {
-                            setShowForgotPassword(!showForgotPassword);
-                            setError('');
-                        }}
-                    >
-                        {showForgotPassword
-                            ? 'Back to Login'
-                            : 'Forgot Password?'
-                        }
-                    </button>
+                    {/* Only show forgot password button after successful verification */}
+                    {isRegisteredUser && (
+                        <button
+                            type="button"
+                            className="forgot-password-button"
+                            onClick={() => {
+                                setShowForgotPassword(!showForgotPassword);
+                                setError('');
+                                setSuccess('');
+                            }}
+                        >
+                            {showForgotPassword
+                                ? 'Back to Login'
+                                : 'Forgot Password?'
+                            }
+                        </button>
+                    )}
                 </form>
             </div>
         </div>

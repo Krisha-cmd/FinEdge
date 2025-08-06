@@ -16,6 +16,7 @@
    --pink: #d1b16a;
   --light-gray: #e0e0e0;
   --dark-gray: #555555;
+  --error: #ff0000; /* Red for error messages */
 
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #d1b16a 0%, #a67839 100%);
@@ -44,4 +45,5 @@
   --gradient-overlay-dark: linear-gradient(rgba(30, 43, 79, 0.9), rgba(166, 120, 57, 0.9));
   --gradient-hover: linear-gradient(135deg, #b892503e 0%, #1e2b4f77 100%);
 --gradient-hover-dark: linear-gradient(135deg, #a6793992 0%, #2c3c6196 100%);
+--error: #ff0000;
 }
