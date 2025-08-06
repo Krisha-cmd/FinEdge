@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.61d22d8e.css",
-    "main.js": "/static/js/main.962f72b9.js",
-    "static/media/logo.jpg": "/static/media/logo.2c7fff09dd105fb263e6.jpg",
-    "static/media/scooter-insurance.png": "/static/media/scooter-insurance.70d2d047b67e2cf1e17a.png",
-    "static/media/car-insurance.png": "/static/media/car-insurance.e54c10182ae528111bea.png",
-    "static/media/health-insurance.png": "/static/media/health-insurance.3683da16f5e26e4e5fbf.png",
-    "static/media/life-insurance.png": "/static/media/life-insurance.8b5dda21025fe67b6278.png",
-    "index.html": "/index.html",
-    "main.61d22d8e.css.map": "/static/css/main.61d22d8e.css.map",
-    "main.962f72b9.js.map": "/static/js/main.962f72b9.js.map"
+    "main.css": "./static/css/main.ccdb9847.css",
+    "main.js": "./static/js/main.b328c831.js",
+    "static/media/logo.jpg": "./static/media/logo.2c7fff09dd105fb263e6.jpg",
+    "static/media/scooter-insurance.png": "./static/media/scooter-insurance.70d2d047b67e2cf1e17a.png",
+    "static/media/car-insurance.png": "./static/media/car-insurance.e54c10182ae528111bea.png",
+    "static/media/health-insurance.png": "./static/media/health-insurance.3683da16f5e26e4e5fbf.png",
+    "static/media/life-insurance.png": "./static/media/life-insurance.8b5dda21025fe67b6278.png",
+    "index.html": "./index.html",
+    "main.ccdb9847.css.map": "./static/css/main.ccdb9847.css.map",
+    "main.b328c831.js.map": "./static/js/main.b328c831.js.map"
   },
   "entrypoints": [
-    "static/css/main.61d22d8e.css",
-    "static/js/main.962f72b9.js"
+    "static/css/main.ccdb9847.css",
+    "static/js/main.b328c831.js"
   ]
 }
