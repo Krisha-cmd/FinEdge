@@ -1,6 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { auth } from '../config/firebase';
-import { onAuthStateChanged, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { 
+    onAuthStateChanged, 
+    signInWithEmailAndPassword, 
+    sendPasswordResetEmail,
+    confirmPasswordReset,
+    verifyPasswordResetCode,
+    applyActionCode
+} from 'firebase/auth';
+import config from '../config/api.js';
 
 const AuthContext = createContext();
 
@@ -47,10 +55,44 @@ export const AuthProvider = ({ children }) => {
     };
 
     const resetPassword = async (email) => {
-        return sendPasswordResetEmail(auth, email, {
-            url: 'https://teninfinity.com/#/login', // URL to redirect after password reset
-            handleCodeInApp: false
-        });
+        try {
+            // Call your server endpoint instead of Firebase directly
+            const response = await fetch(`${config.baseURL}/user/reset-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email })
+            });
+
+            const data = await response.json();
+            if (!data.status === 'success') {
+                throw new Error(data.message);
+            }
+
+            return true;
+        } catch (error) {
+            console.error('Reset password error:', error);
+            throw error;
+        }
+    };
+
+    const confirmPasswordReset = async (oobCode, newPassword) => {
+        if (!oobCode) {
+            throw new Error('No reset code provided');
+        }
+        
+        try {
+            // First verify the code
+            await verifyPasswordResetCode(auth, oobCode);
+            // Then confirm the password reset
+            await applyActionCode(auth, oobCode);
+            await confirmPasswordReset(auth, oobCode, newPassword);
+            return true;
+        } catch (error) {
+            console.error('Confirm password reset error:', error);
+            throw error;
+        }
     };
 
     const value = {
@@ -58,6 +100,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         login,
         resetPassword,
+        confirmPasswordReset,
         loading
     };
 
@@ -69,3 +112,4 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+

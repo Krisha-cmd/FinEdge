@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from '../config/firebase';
 import { useAuth } from '../context/AuthContext'; // Add this import
@@ -9,6 +9,8 @@ import config from '../config/api.js';
 import { scrollToSection } from '../utils/scrollHelper';
 
 const Login = () => {
+    const location = useLocation();
+    const [successMessage, setSuccessMessage] = useState(location.state?.message || '');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -59,27 +61,29 @@ const Login = () => {
         setLoading(true);
 
         try {
-            // First verify the email exists in our system
-            const verifyResponse = await fetch(`${config.baseURL}${config.endpoints.checkUser}/${encodeURIComponent(email)}`);
-            const verifyData = await verifyResponse.json();
+            // Call our custom reset password endpoint
+            const response = await fetch(`${config.baseURL}/user/reset-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email })
+            });
 
-            if (!verifyData.userRegistered) {
-                setError('Email not found in our system');
-                return;
+            const data = await response.json();
+
+            if (data.status === 'success') {
+                setSuccess('Password reset link sent! Please check your email (including spam folder).');
+                setError('');
+
+                // Reset form after 3 seconds
+                setTimeout(() => {
+                    setShowForgotPassword(false);
+                    setSuccess('');
+                }, 3000);
+            } else {
+                throw new Error(data.message);
             }
-
-            // Use Firebase's password reset
-            await resetPassword(email);
-            
-            setSuccess('Password reset link sent! Please check your email (including spam folder).');
-            setError('');
-
-            // Reset form after 3 seconds
-            setTimeout(() => {
-                setShowForgotPassword(false);
-                setSuccess('');
-            }, 3000);
-
         } catch (err) {
             console.error('Password reset error:', err);
             setError('Unable to send reset email. Please try again later.');
@@ -112,6 +116,17 @@ const Login = () => {
             setError('Error checking user registration');
         }
     };
+
+    useEffect(() => {
+        if (location.state?.message) {
+            setSuccessMessage(location.state.message);
+            // Clear the message after 5 seconds
+            const timer = setTimeout(() => {
+                setSuccessMessage('');
+            }, 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [location.state]);
 
     return (
         <div className="login-container">
@@ -169,6 +184,11 @@ const Login = () => {
                     {/* Show error and success messages */}
                     {error && <div className="error-message">{error}</div>}
                     {success && <div className="success-message">{success}</div>}
+                    {successMessage && (
+                        <div className="success-message">
+                            {successMessage}
+                        </div>
+                    )}
 
                     {/* Show not registered message */}
                     {!isRegisteredUser && verificationAttempted && (
