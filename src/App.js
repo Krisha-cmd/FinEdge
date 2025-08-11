@@ -17,6 +17,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import SignUp from './pages/SignUp';
 import SetPassword from './pages/SetPassword'; // Assuming you have this component for success modal
 import ResetPassword from './pages/ResetPassword'; // Import the ResetPassword component
+import Sales from './pages/Sales'; // Import the Sales page
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -42,7 +43,7 @@ function AnimatedRoutes() {
         } />
         <Route path="/sales" element={
           <PageTransition>
-            <div>Sales Page</div>
+            <Sales />
           </PageTransition>
         } />
         <Route path="/activity" element={
@@ -62,6 +63,7 @@ function AnimatedRoutes() {
             <SignUp />
           </PageTransition>
         } />
+
 
         <Route path="/set-password" element={<PageTransition><SetPassword /></PageTransition>} />
         <Route path="/reset-password" element={

@@ -187,14 +187,14 @@ const Header = () => {
 
                             {currentUser && (
                                 <>
-                                    {/* <NavLink 
+                                    <NavLink 
                                         to="/sales" 
                                         className="nav-link" 
                                         onClick={handleNavClick}
                                     >
                                         Sales
                                     </NavLink>
-                                    <NavLink 
+                                    {/*<NavLink 
                                         to="/activity" 
                                         className="nav-link" 
                                         onClick={handleNavClick}

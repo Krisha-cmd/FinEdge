@@ -6,7 +6,12 @@ const config = {
         contactUs: '/contact',
         sendRegistrationEmail: '/send-registration',
         login: '/user/login',
-        resetPassword: '/user/reset-password'
+        resetPassword: '/user/reset-password',
+        sales: {
+            l1member: '/sales/l1member',
+            hierarchy: '/sales/hierarchy',
+            policies: '/sales/policies'
+        }
     }
 };
 
