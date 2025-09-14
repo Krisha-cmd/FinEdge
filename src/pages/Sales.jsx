@@ -511,7 +511,7 @@ const Sales = () => {
                             <div className="card-content">
                                 <h3>{l1Member.name}</h3>
                                 <p>CO Code: {l1Member.coCode}</p>
-                                <small className="member-type">L1 Member</small>
+                                {/* <small className="member-type">L1 Member</small> */}
                             </div>
                             <span className="arrow">→</span>
                         </div>
@@ -520,7 +520,7 @@ const Sales = () => {
                     {/* L1 Children */}
                     {l1Children.length > 0 && (
                         <>
-                            <div className="section-divider">L1 Children</div>
+                            <div className="section-divider"> </div>
                             {l1Children.map((child) => (
                                 <div 
                                     key={child.coCode}
@@ -557,7 +557,7 @@ const Sales = () => {
                         {/* L2 Children */}
                         {l2Children.length > 0 && (
                             <>
-                                <div className="section-divider">L2 Children</div>
+                                <div className="section-divider"> </div>
                                 {l2Children.map((child) => (
                                     <div 
                                         key={child.coCode}
@@ -597,11 +597,15 @@ const Sales = () => {
                                             <h3>{sale.productName}</h3>
                                         </div>
                                         <div className="policy-content">
-                                            <p><strong>Policy Type:</strong> {sale.policyType}</p>
+                                            {/* <p><strong>Policy Type:</strong> {sale.policyType}</p> */}
                                             <p><strong>Policy Number:</strong> {sale.policyNumber}</p>
-                                            <p><strong>Sum Insured:</strong> ₹{sale.sumInsured}</p>
+                                            {/* <p><strong>Sum Insured:</strong> ₹{sale.sumInsured}</p> */}
                                             <p><strong>Client Name:</strong> {sale.clientName}</p>
-                                            <p><strong>Sale Date:</strong> {sale.policyDate}</p>
+                                            {/* <p><strong>Sale Date:</strong> {sale.policyDate}</p> */}
+                                            <p><strong>Risk Start Date:</strong> {new Date(sale.riskStart).toLocaleDateString()}</p>
+                                            <p><strong>Risk End Date:</strong> {new Date(sale.riskEnd).toLocaleDateString()}</p>
+                                            <p><strong>Net Premium:</strong> ₹{sale.netPremium}</p>
+                                            <p><strong>Pay Out:</strong> ₹{sale.payOut}</p>
                                             {sale.vehicleNo && (
                                                 <p><strong>Vehicle No:</strong> {sale.vehicleNo}</p>
                                             )}
