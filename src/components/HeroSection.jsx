@@ -29,7 +29,7 @@ const HeroSection = () => {
                     <>
                         <h1 className="animate-in">Thanks for visiting us!</h1>
                         <p className="animate-in">
-                            Our website is currently under development and will be live by Independence Day.
+                            Our website is currently under development and will be live soon.
                         </p>
                         <p className="animate-in highlight-text">
                             We will be proudly revealing our esteemed partners on the platform
