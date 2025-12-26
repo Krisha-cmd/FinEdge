@@ -10,7 +10,8 @@ const config = {
         sales: {
             l1member: '/sales/l1member',
             hierarchy: '/sales/hierarchy',
-            sales: '/sales/sales'
+            sales: '/sales/sales',
+            allSales: '/sales/all-sales' 
         }
     }
 };
