@@ -857,3 +857,34 @@
         border-top-color: var(--dark-gray);
     }
 }
+
+.policy-download-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: var(--policy-color, #4CAF50);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.policy-download-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.policy-download-btn:active {
+    transform: translateY(0);
+}
+
+.download-icon {
+    font-size: 1rem;
+}

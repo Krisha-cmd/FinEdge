@@ -99,6 +99,12 @@ const Profile = () => {
                             <p>{profileData?.bankAccount || 'Not provided'}</p>
                         </div>
                     </div>
+                    <div className="info-item">
+                        <div className="info-content">
+                            <label>IFSC Code</label>
+                            <p>{profileData?.ifscCode || 'Not provided'}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

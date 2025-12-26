@@ -1,12 +1,12 @@
 const config = {
     baseURL: 'https://api-oaefuk4eqq-el.a.run.app',
     endpoints: {
-        checkUser: '/user/check',
-        profile: '/user/profile',
+        checkUser: '/account/check',
+        profile: '/account/profile',
         contactUs: '/contact',
         sendRegistrationEmail: '/send-registration',
         login: '/user/login',
-        resetPassword: '/user/reset-password',
+        resetPassword: '/account/reset-password',
         sales: {
             l1member: '/sales/l1member',
             hierarchy: '/sales/hierarchy',

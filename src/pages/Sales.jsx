@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import config from '../config/api';
-import { FaUser, FaHeartbeat, FaCar, FaHome, FaTimes, FaSearch, FaCalendarAlt, FaFilter, FaBars } from 'react-icons/fa';
+import { FaUser, FaHeartbeat, FaCar, FaHome, FaTimes, FaSearch, FaCalendarAlt, FaFilter, FaBars, FaDownload } from 'react-icons/fa';
 import './Sales.css';
 
 const POLICY_TYPES = {
@@ -610,6 +610,15 @@ const Sales = () => {
                                                 <p><strong>Vehicle No:</strong> {sale.vehicleNo}</p>
                                             )}
                                             <p><strong>Insurer:</strong> {sale.insurer}</p>
+                                            
+                                            {/* Add download button */}
+                                            <button 
+                                                className="policy-download-btn"
+                                                onClick={() => window.open(`${config.baseURL}/policy/download/${sale.soldBy}/${sale.policyNumber}`, '_blank')}
+                                            >
+                                                <FaDownload className="download-icon" />
+                                                View Policy
+                                            </button>
                                         </div>
                                     </div>
                                 );
