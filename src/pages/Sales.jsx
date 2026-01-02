@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import config from '../config/api';
-import { FaSort, FaSortUp, FaSortDown, FaSearch, FaFilter, FaTimes, FaDownload, FaCalculator, FaFileAlt, FaTimesCircle, FaCalendarAlt, FaCheck } from 'react-icons/fa';
+import { FaSort, FaSortUp, FaSortDown, FaSearch, FaFilter, FaTimes, FaDownload, FaCalculator, FaFileAlt, FaTimesCircle, FaCalendarAlt, FaCheck, FaEyeSlash, FaEye, FaColumns } from 'react-icons/fa';
 import './Sales.css';
 
 const Sales = () => {
     const [salesData, setSalesData] = useState([]);
     const [columnsConfig, setColumnsConfig] = useState([]);
-    const [allColumnsFromApi, setAllColumnsFromApi] = useState([]); // Store all columns including invisible ones
+    const [allColumnsFromApi, setAllColumnsFromApi] = useState([]);
+    const [hiddenColumns, setHiddenColumns] = useState([]); // Track hidden columns
+    const [showColumnManager, setShowColumnManager] = useState(false); // Column manager dropdown
     const [loading, setLoading] = useState(true);
     const [columnsLoading, setColumnsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -21,6 +23,30 @@ const Sales = () => {
     const [appliedDateRange, setAppliedDateRange] = useState({ startDate: '', endDate: '' });
     const { currentUser } = useAuth();
 
+    // Get visible columns (excluding hidden ones)
+    const visibleColumns = useMemo(() => {
+        return columnsConfig.filter(col => !hiddenColumns.includes(col.key));
+    }, [columnsConfig, hiddenColumns]);
+
+    // Hide a column
+    const hideColumn = (columnKey) => {
+        setHiddenColumns(prev => [...prev, columnKey]);
+        // Close filter dropdown if open for this column
+        if (activeFilterColumn === columnKey) {
+            setActiveFilterColumn(null);
+        }
+    };
+
+    // Show a column
+    const showColumn = (columnKey) => {
+        setHiddenColumns(prev => prev.filter(key => key !== columnKey));
+    };
+
+    // Show all columns
+    const showAllColumns = () => {
+        setHiddenColumns([]);
+    };
+
     // Fetch column configuration from API
     const fetchColumnConfig = useCallback(async () => {
         setColumnsLoading(true);
@@ -31,7 +57,6 @@ const Sales = () => {
             const data = await response.json();
 
             if (data.status === 'success') {
-                // Store all columns (for date filtering)
                 const allCols = data.columns.map(col => ({
                     key: col.columnname,
                     id: col.id,
@@ -43,14 +68,12 @@ const Sales = () => {
                 }));
                 setAllColumnsFromApi(allCols);
 
-                // Filter only visible columns for display
                 const visibleColumns = allCols
                     .filter(col => col.visibility === 'visible')
                     .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
 
                 setColumnsConfig(visibleColumns);
                 
-                // Log date columns for debugging
                 const dateCols = allCols.filter(col => col.type === 'date');
                 console.log('Date columns found:', dateCols);
             } else {
@@ -135,30 +158,25 @@ const Sales = () => {
     const getSaleValue = (sale, columnKey) => {
         if (!sale || !columnKey) return undefined;
 
-        // Direct match first
         if (sale[columnKey] !== undefined) {
             return sale[columnKey];
         }
 
-        // Try lowercase version of key
         const lowerKey = columnKey.toLowerCase();
         if (sale[lowerKey] !== undefined) {
             return sale[lowerKey];
         }
 
-        // Try removing spaces and special characters
         const normalizedKey = columnKey.toLowerCase().replace(/[\s.]+/g, '_');
         if (sale[normalizedKey] !== undefined) {
             return sale[normalizedKey];
         }
 
-        // Try with spaces replaced by nothing
         const noSpaceKey = columnKey.toLowerCase().replace(/[\s.]+/g, '');
         if (sale[noSpaceKey] !== undefined) {
             return sale[noSpaceKey];
         }
 
-        // Search through all keys for a case-insensitive match
         const saleKeys = Object.keys(sale);
         const matchingKey = saleKeys.find(k => 
             k.toLowerCase().replace(/[\s._]+/g, '') === columnKey.toLowerCase().replace(/[\s._]+/g, '')
@@ -190,16 +208,14 @@ const Sales = () => {
                '';
     };
 
-    // Parse date string to Date object (handles multiple formats)
+    // Parse date string to Date object
     const parseDate = (dateValue) => {
         if (!dateValue) return null;
         
-        // If already a Date object
         if (dateValue instanceof Date) {
             return isNaN(dateValue.getTime()) ? null : dateValue;
         }
 
-        // Handle Firestore Timestamp
         if (dateValue._seconds !== undefined) {
             return new Date(dateValue._seconds * 1000);
         }
@@ -208,17 +224,14 @@ const Sales = () => {
             return new Date(dateValue.seconds * 1000);
         }
 
-        // Try parsing as ISO string or standard date
         let date = new Date(dateValue);
         if (!isNaN(date.getTime())) {
             return date;
         }
 
-        // Try DD/MM/YYYY or DD-MM-YYYY format
         if (typeof dateValue === 'string') {
             const parts = dateValue.split(/[\/\-\.]/);
             if (parts.length === 3) {
-                // Assume DD/MM/YYYY
                 const day = parseInt(parts[0], 10);
                 const month = parseInt(parts[1], 10) - 1;
                 const year = parseInt(parts[2], 10);
@@ -244,7 +257,6 @@ const Sales = () => {
 
     // Check if a sale has any date field within the date range
     const isWithinDateRange = useCallback((sale) => {
-        // If no date range applied, include all records
         if (!appliedDateRange.startDate && !appliedDateRange.endDate) {
             return true;
         }
@@ -252,17 +264,14 @@ const Sales = () => {
         const startDate = appliedDateRange.startDate ? new Date(appliedDateRange.startDate) : null;
         const endDate = appliedDateRange.endDate ? new Date(appliedDateRange.endDate) : null;
 
-        // Set start date to beginning of day
         if (startDate) {
             startDate.setHours(0, 0, 0, 0);
         }
 
-        // Set end date to end of day
         if (endDate) {
             endDate.setHours(23, 59, 59, 999);
         }
 
-        // Check all date columns from API config
         for (const col of dateColumnsFromApi) {
             const dateValue = getSaleValue(sale, col.key);
             
@@ -272,26 +281,17 @@ const Sales = () => {
             
             if (!saleDate) continue;
 
-            // Normalize sale date to compare just the date part
             const saleDateNormalized = new Date(saleDate);
-            saleDateNormalized.setHours(12, 0, 0, 0); // Set to noon to avoid timezone issues
+            saleDateNormalized.setHours(12, 0, 0, 0);
 
             const afterStart = !startDate || saleDateNormalized >= startDate;
             const beforeEnd = !endDate || saleDateNormalized <= endDate;
 
-            // If ANY date column is within range, include this record
             if (afterStart && beforeEnd) {
-                console.log(`Match found for ${col.key}:`, {
-                    value: dateValue,
-                    parsed: saleDate,
-                    startDate,
-                    endDate
-                });
                 return true;
             }
         }
 
-        // No matching date found in any date column
         return false;
     }, [appliedDateRange, dateColumnsFromApi]);
 
@@ -423,7 +423,6 @@ const Sales = () => {
                     console.log('Sample sale keys:', Object.keys(data.sales[0]));
                     console.log('Sample sale data:', data.sales[0]);
                     
-                    // Log date values for debugging
                     dateColumnsFromApi.forEach(col => {
                         const val = getSaleValue(data.sales[0], col.key);
                         console.log(`Date column "${col.key}" value:`, val, 'parsed:', parseDate(val));
@@ -485,13 +484,6 @@ const Sales = () => {
     const processedData = useMemo(() => {
         let result = [...salesData];
 
-        console.log('Processing data:', {
-            total: result.length,
-            appliedDateRange,
-            dateColumnsCount: dateColumnsFromApi.length
-        });
-
-        // Apply search
         if (searchTerm) {
             const term = searchTerm.toLowerCase();
             result = result.filter(sale =>
@@ -501,14 +493,10 @@ const Sales = () => {
             );
         }
 
-        // Apply date range filter
         if (appliedDateRange.startDate || appliedDateRange.endDate) {
-            const beforeCount = result.length;
             result = result.filter(sale => isWithinDateRange(sale));
-            console.log(`Date filter: ${beforeCount} -> ${result.length} records`);
         }
 
-        // Apply column filters
         Object.entries(filters).forEach(([key, value]) => {
             result = result.filter(sale => {
                 const saleVal = getSaleValue(sale, key);
@@ -516,7 +504,6 @@ const Sales = () => {
             });
         });
 
-        // Apply sort
         if (sortConfig.key) {
             const col = columnsConfig.find(c => c.key === sortConfig.key);
             
@@ -581,9 +568,9 @@ const Sales = () => {
 
     // Export to CSV
     const exportToCSV = () => {
-        const headers = columnsConfig.map(c => c.header).join(',');
+        const headers = visibleColumns.map(c => c.header).join(',');
         const rows = processedData.map(sale =>
-            columnsConfig.map(col => {
+            visibleColumns.map(col => {
                 let val = getSaleValue(sale, col.key) || '';
                 if (String(val).includes(',') || String(val).includes('"')) {
                     val = `"${String(val).replace(/"/g, '""')}"`;
@@ -646,6 +633,58 @@ const Sales = () => {
                     <span className="sales-count">
                         {processedData.length} of {salesData.length} records
                     </span>
+                    
+                    {/* Column Manager Button */}
+                    <div className="column-manager-wrapper">
+                        <button 
+                            onClick={() => setShowColumnManager(!showColumnManager)} 
+                            className={`column-manager-btn ${hiddenColumns.length > 0 ? 'has-hidden' : ''}`}
+                            title="Manage Columns"
+                        >
+                            <FaColumns />
+                            {hiddenColumns.length > 0 && (
+                                <span className="hidden-count">{hiddenColumns.length}</span>
+                            )}
+                        </button>
+                        
+                        {showColumnManager && (
+                            <div className="column-manager-dropdown">
+                                <div className="column-manager-header">
+                                    <span>Manage Columns</span>
+                                    {hiddenColumns.length > 0 && (
+                                        <button 
+                                            className="show-all-btn"
+                                            onClick={showAllColumns}
+                                        >
+                                            Show All
+                                        </button>
+                                    )}
+                                </div>
+                                <div className="column-list">
+                                    {columnsConfig.map(col => (
+                                        <div 
+                                            key={col.key} 
+                                            className={`column-item ${hiddenColumns.includes(col.key) ? 'hidden' : ''}`}
+                                        >
+                                            <span className="column-name">{col.header}</span>
+                                            <button
+                                                className="toggle-visibility-btn"
+                                                onClick={() => 
+                                                    hiddenColumns.includes(col.key) 
+                                                        ? showColumn(col.key) 
+                                                        : hideColumn(col.key)
+                                                }
+                                                title={hiddenColumns.includes(col.key) ? 'Show column' : 'Hide column'}
+                                            >
+                                                {hiddenColumns.includes(col.key) ? <FaEye /> : <FaEyeSlash />}
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
                     {numericColumns.length > 0 && (
                         <button onClick={() => setShowCalculator(!showCalculator)} className="calc-btn">
                             <FaCalculator /> Summary
@@ -721,9 +760,25 @@ const Sales = () => {
                 </div>
             </div>
 
-            {/* Active Filters */}
-            {hasActiveFilters && (
+            {/* Active Filters & Hidden Columns */}
+            {(hasActiveFilters || hiddenColumns.length > 0) && (
                 <div className="active-filters">
+                    {/* Hidden Columns Tags */}
+                    {hiddenColumns.length > 0 && (
+                        <>
+                            {hiddenColumns.map(key => {
+                                const col = columnsConfig.find(c => c.key === key);
+                                return (
+                                    <span key={key} className="filter-tag hidden-column-tag">
+                                        <FaEyeSlash />
+                                        <span className="filter-text">{col?.header || key}</span>
+                                        <FaTimes onClick={() => showColumn(key)} className="remove-filter" />
+                                    </span>
+                                );
+                            })}
+                        </>
+                    )}
+
                     {isDateRangeApplied && (
                         <span className="filter-tag date-filter-tag">
                             <FaCalendarAlt />
@@ -746,9 +801,11 @@ const Sales = () => {
                             <FaTimes onClick={() => handleFilter(key, '')} className="remove-filter" />
                         </span>
                     ))}
-                    <button className="clear-filters-btn" onClick={clearFilters}>
-                        Clear All
-                    </button>
+                    {(hasActiveFilters || hiddenColumns.length > 0) && (
+                        <button className="clear-filters-btn" onClick={() => { clearFilters(); showAllColumns(); }}>
+                            Clear All
+                        </button>
+                    )}
                 </div>
             )}
 
@@ -792,7 +849,7 @@ const Sales = () => {
                     <table className="data-table">
                         <thead>
                             <tr>
-                                {columnsConfig.map(col => (
+                                {visibleColumns.map(col => (
                                     <th 
                                         key={col.key} 
                                         style={{ minWidth: col.width }}
@@ -805,12 +862,20 @@ const Sales = () => {
                                                 {col.header}
                                                 {renderSortIcon(col.key)}
                                             </span>
-                                            <FaFilter 
-                                                className={`filter-icon ${filters[col.key] ? 'active' : ''}`}
-                                                onClick={() => setActiveFilterColumn(
-                                                    activeFilterColumn === col.key ? null : col.key
-                                                )}
-                                            />
+                                            <div className="th-actions">
+                                                <FaFilter 
+                                                    className={`filter-icon ${filters[col.key] ? 'active' : ''}`}
+                                                    onClick={() => setActiveFilterColumn(
+                                                        activeFilterColumn === col.key ? null : col.key
+                                                    )}
+                                                    title="Filter"
+                                                />
+                                                {/* <FaEyeSlash 
+                                                    className="hide-icon"
+                                                    onClick={() => hideColumn(col.key)}
+                                                    title="Hide column"
+                                                /> */}
+                                            </div>
                                         </div>
 
                                         {activeFilterColumn === col.key && (
@@ -840,7 +905,7 @@ const Sales = () => {
                         <tbody>
                             {processedData.map((sale, rowIdx) => (
                                 <tr key={sale.id || rowIdx}>
-                                    {columnsConfig.map(col => (
+                                    {visibleColumns.map(col => (
                                         <td key={col.key}>
                                             {formatValue(getSaleValue(sale, col.key), col.type, col.casing)}
                                         </td>
