@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.729c4201.css",
-    "main.js": "./static/js/main.b9134399.js",
+    "main.js": "./static/js/main.d238096d.js",
     "static/media/logo.jpg": "./static/media/logo.06e04d49111903312e86.jpg",
     "static/media/scooter-insurance.png": "./static/media/scooter-insurance.70d2d047b67e2cf1e17a.png",
     "static/media/car-insurance.png": "./static/media/car-insurance.e54c10182ae528111bea.png",
@@ -9,10 +9,10 @@
     "static/media/life-insurance.png": "./static/media/life-insurance.8b5dda21025fe67b6278.png",
     "index.html": "./index.html",
     "main.729c4201.css.map": "./static/css/main.729c4201.css.map",
-    "main.b9134399.js.map": "./static/js/main.b9134399.js.map"
+    "main.d238096d.js.map": "./static/js/main.d238096d.js.map"
   },
   "entrypoints": [
     "static/css/main.729c4201.css",
-    "static/js/main.b9134399.js"
+    "static/js/main.d238096d.js"
   ]
 }
