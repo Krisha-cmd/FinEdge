@@ -21,9 +21,10 @@
 }
 
 .logo img {
-  height: 72px;
+  height: 102px;
   width: auto;
-  object-fit: contain;
+  position: absolute;
+  top:0;
 }
 
 .nav {
@@ -221,7 +222,7 @@
   }
 
   .logo img {
-  height: 32px;
+  height: 40px;
   width: auto;
   object-fit: contain;
 }

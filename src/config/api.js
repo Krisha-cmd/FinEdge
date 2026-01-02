@@ -11,7 +11,11 @@ const config = {
             l1member: '/sales/l1member',
             hierarchy: '/sales/hierarchy',
             sales: '/sales/sales',
-            allSales: '/sales/all-sales' 
+            allSales: '/sales/all-sales' ,
+            colInfo: '/sales/col-info'
+        },
+        policy: {
+            download: '/policy/download'
         }
     }
 };
