@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { auth } from '../config/firebase';
-import { useAuth } from '../context/AuthContext'; // Add this import
+import { useAuth } from '../context/AuthContext';
 import AnimatedBackground from '../components/AnimatedBackground';
 import './Login.css';
 import config from '../config/api.js';
-import { scrollToSection } from '../utils/scrollHelper';
 
 const Login = () => {
     const location = useLocation();
@@ -16,25 +13,13 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const [isRegisteredUser, setIsRegisteredUser] = useState(false);
     const [showForgotPassword, setShowForgotPassword] = useState(false);
-    const [isEmailValid, setIsEmailValid] = useState(false);
-    const [verificationAttempted, setVerificationAttempted] = useState(false);
-    const { login, resetPassword } = useAuth(); // Add this line to destructure auth methods
+    const { login } = useAuth();
     const navigate = useNavigate();
 
     const validateEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
-    };
-
-    const handleEmailChange = (e) => {
-        const newEmail = e.target.value;
-        setEmail(newEmail);
-        setIsEmailValid(validateEmail(newEmail));
-        // Reset registration status and verification attempt when email changes
-        setIsRegisteredUser(false);
-        setVerificationAttempted(false);
     };
 
     const handleLogin = async (e) => {
@@ -46,9 +31,15 @@ const Login = () => {
             await login(email, password);
             navigate('/');
         } catch (err) {
-            setError(err.message.includes('auth/invalid-credential')
-                ? 'Invalid password'
-                : 'Error logging in. Please try again.');
+            if (err.message.includes('auth/invalid-credential') || err.message.includes('auth/wrong-password')) {
+                setError('Invalid email or password');
+            } else if (err.message.includes('auth/user-not-found')) {
+                setError('No account found with this email');
+            } else if (err.message.includes('auth/too-many-requests')) {
+                setError('Too many failed attempts. Please try again later.');
+            } else {
+                setError('Error logging in. Please try again.');
+            }
             console.error(err);
         } finally {
             setLoading(false);
@@ -60,8 +51,13 @@ const Login = () => {
         setError('');
         setLoading(true);
 
+        if (!validateEmail(email)) {
+            setError('Please enter a valid email address');
+            setLoading(false);
+            return;
+        }
+
         try {
-            // Call our custom reset password endpoint
             const response = await fetch(`${config.baseURL}/user/reset-password`, {
                 method: 'POST',
                 headers: {
@@ -76,7 +72,6 @@ const Login = () => {
                 setSuccess('Password reset link sent! Please check your email (including spam folder).');
                 setError('');
 
-                // Reset form after 3 seconds
                 setTimeout(() => {
                     setShowForgotPassword(false);
                     setSuccess('');
@@ -92,41 +87,21 @@ const Login = () => {
         }
     };
 
-    const verifyUserRegistration = async () => {
-        if (!email) {
-            setError('Please enter an email address');
-            return;
-        }
-
-        try {
-            setVerificationAttempted(true);
-            const response = await fetch(`${config.baseURL}${config.endpoints.checkUser}/${encodeURIComponent(email)}`);
-            const data = await response.json();
-
-            if (data.status === 'success') {
-                setIsRegisteredUser(data.userRegistered);
-                if (!data.userRegistered) {
-                    setError('This email is not registered');
-                }
-            } else {
-                setError('Error verifying user status');
-            }
-        } catch (err) {
-            console.error('User verification error:', err);
-            setError('Error checking user registration');
-        }
-    };
-
     useEffect(() => {
         if (location.state?.message) {
             setSuccessMessage(location.state.message);
-            // Clear the message after 5 seconds
             const timer = setTimeout(() => {
                 setSuccessMessage('');
             }, 5000);
             return () => clearTimeout(timer);
         }
     }, [location.state]);
+
+    // Clear error when switching between login and forgot password
+    useEffect(() => {
+        setError('');
+        setSuccess('');
+    }, [showForgotPassword]);
 
     return (
         <div className="login-container">
@@ -143,31 +118,17 @@ const Login = () => {
                 <form onSubmit={showForgotPassword ? handleForgotPassword : handleLogin} className="login-form">
                     <div className="form-group">
                         <label htmlFor="email">Email Address</label>
-                        <div className="email-input">
-                            <input
-                                type="email"
-                                id="email"
-                                value={email}
-                                onChange={handleEmailChange}
-                                placeholder="Enter email address"
-                                required
-                            />
-                        </div>
-                        {/* Only show verify button when not in forgot password mode */}
-                        {!showForgotPassword && (
-                            <button
-                                type="button"
-                                className={`verify-button ${isEmailValid ? 'active' : ''}`}
-                                onClick={verifyUserRegistration}
-                                disabled={!isEmailValid}
-                            >
-                                Verify Email
-                            </button>
-                        )}
+                        <input
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Enter email address"
+                            required
+                        />
                     </div>
 
-                    {/* Password field only shows after verification for login */}
-                    {!showForgotPassword && isRegisteredUser && (
+                    {!showForgotPassword && (
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
                             <input
@@ -181,31 +142,14 @@ const Login = () => {
                         </div>
                     )}
 
-                    {/* Show error and success messages */}
                     {error && <div className="error-message">{error}</div>}
                     {success && <div className="success-message">{success}</div>}
-                    {successMessage && (
-                        <div className="success-message">
-                            {successMessage}
-                        </div>
-                    )}
-
-                    {/* Show not registered message */}
-                    {!isRegisteredUser && verificationAttempted && (
-                        <div className="error-message">
-                            This email is not onboarded.
-                            <Link to="/signup" className="contact-link">
-                                Sign up
-                            </Link>
-                            {" "}if you want to join our network.
-                        </div>
-                    )}
+                    {successMessage && <div className="success-message">{successMessage}</div>}
 
                     <button
                         type="submit"
                         className="login-button"
-                        disabled={loading || 
-                            (showForgotPassword ? !isRegisteredUser : (!isRegisteredUser || !password))}
+                        disabled={loading || !email || (!showForgotPassword && !password)}
                     >
                         {loading
                             ? 'Processing...'
@@ -215,23 +159,17 @@ const Login = () => {
                         }
                     </button>
 
-                    {/* Only show forgot password button after successful verification */}
-                    {isRegisteredUser && (
-                        <button
-                            type="button"
-                            className="forgot-password-button"
-                            onClick={() => {
-                                setShowForgotPassword(!showForgotPassword);
-                                setError('');
-                                setSuccess('');
-                            }}
-                        >
-                            {showForgotPassword
-                                ? 'Back to Login'
-                                : 'Forgot Password?'
-                            }
-                        </button>
-                    )}
+                    <button
+                        type="button"
+                        className="forgot-password-button"
+                        onClick={() => setShowForgotPassword(!showForgotPassword)}
+                    >
+                        {showForgotPassword ? 'Back to Login' : 'Forgot Password?'}
+                    </button>
+
+                    <div className="signup-link">
+                        Don't have an account? <Link to="/signup">Sign up</Link>
+                    </div>
                 </form>
             </div>
         </div>
