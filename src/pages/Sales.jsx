@@ -635,7 +635,7 @@ const Sales = () => {
                     </span>
                     
                     {/* Column Manager Button */}
-                    <div className="column-manager-wrapper">
+                    {/* <div className="column-manager-wrapper">
                         <button 
                             onClick={() => setShowColumnManager(!showColumnManager)} 
                             className={`column-manager-btn ${hiddenColumns.length > 0 ? 'has-hidden' : ''}`}
@@ -683,7 +683,7 @@ const Sales = () => {
                                 </div>
                             </div>
                         )}
-                    </div>
+                    </div> */}
 
                     {numericColumns.length > 0 && (
                         <button onClick={() => setShowCalculator(!showCalculator)} className="calc-btn">
