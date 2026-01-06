@@ -58,7 +58,7 @@ const Login = () => {
         }
 
         try {
-            const response = await fetch(`${config.baseURL}/user/reset-password`, {
+            const response = await fetch(`${config.baseURL}${config.endpoints.resetPassword}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
